@@ -20,4 +20,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
-      - run: npm test
+      - name: Testes
+        if: matrix.node == 20
+        run: npm test
+      # gate de cobertura: o Node 22 aceita os limites mínimos (linhas 80%, funções 80%, ramos 70%)
+      - name: Testes com gate de cobertura
+        if: matrix.node == 22
+        run: npm run test:coverage
