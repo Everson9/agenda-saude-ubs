@@ -8,6 +8,11 @@ test('dataValida aceita datas reais e recusa formato errado', () => {
   assert.equal(dataValida('2026-13-01'), false);
 });
 
+test('dataValida recusa dia que não existe no calendário (#16)', () => {
+  assert.equal(dataValida('2026-02-31'), false);
+  assert.equal(dataValida('2028-02-29'), true);
+});
+
 test('dataHoraValida confere data e hora', () => {
   assert.equal(dataHoraValida('2026-11-10T09:00'), true);
   assert.equal(dataHoraValida('2026-11-10T24:00'), false);

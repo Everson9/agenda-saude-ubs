@@ -21,8 +21,9 @@ test('RF04: POST /api/agendamentos agenda e devolve 201', async () => {
   assert.equal(corpo.status, 'agendado');
 });
 
-test('RF04: conflito de horário devolve 409', async () => {
+test('RF04: conflito de horário devolve 409 e data inexistente devolve 400 (#16)', async () => {
   assert.equal((await agendar({ paciente_id: 2 })).status, 409);
+  assert.equal((await agendar({ paciente_id: 2, data_hora: '2026-11-31T09:00' })).status, 400);
   assert.equal((await agendar({ paciente_id: 99 })).status, 404);
 });
 
