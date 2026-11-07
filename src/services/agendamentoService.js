@@ -82,5 +82,15 @@ export function criarAgendamentoService({ agendamentos, pacientes, especialidade
       if (!String(motivo).trim()) throw requisicaoInvalida('informe o motivo do cancelamento');
       return agendamentos.atualizar(ag.id, { status: 'cancelado', motivo_cancelamento: String(motivo).trim() });
     },
+
+    // RF07
+    registrarComparecimento(id, status) {
+      const ag = obterAtivo(id);
+      if (!STATUS_FINAIS.includes(status)) throw requisicaoInvalida('status deve ser "realizado" ou "faltou"');
+      if (ag.data_hora > agoraTexto()) {
+        throw requisicaoInvalida('só é possível registrar comparecimento depois do horário marcado');
+      }
+      return agendamentos.atualizar(ag.id, { status });
+    },
   };
 }
