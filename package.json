@@ -1,6 +1,6 @@
 {
   "name": "agenda-saude-ubs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "API e tela simples para agendamento de consultas numa Unidade Básica de Saúde (UBS).",
   "type": "module",
   "main": "src/server.js",
