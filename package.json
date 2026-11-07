@@ -9,7 +9,8 @@
     "dev": "node --watch src/server.js",
     "test": "node --test",
     "test:coverage": "node --test --experimental-test-coverage --test-coverage-exclude=tests/** --test-coverage-lines=80 --test-coverage-functions=80 --test-coverage-branches=70",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "hash-senha": "node scripts/gerar-hash-senha.js"
   },
   "engines": {
     "node": ">=20"
