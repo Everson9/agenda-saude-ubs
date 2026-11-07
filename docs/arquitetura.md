@@ -126,7 +126,8 @@ stateDiagram-v2
 
 | Método | Rota | Requisito | Respostas |
 |---|---|---|---|
-| GET | `/api/saude` | — | 200 |
+| GET | `/api/saude` | — (pública) | 200 |
+| POST | `/api/auth/login` | RNF05 (pública) | 200, 401 |
 | POST | `/api/pacientes` | RF01 | 201, 400, 409 |
 | GET | `/api/pacientes?busca=` | RF02 | 200 |
 | GET | `/api/pacientes/:id` | RF02 | 200, 404 |
@@ -137,4 +138,5 @@ stateDiagram-v2
 | PATCH | `/api/agendamentos/:id/comparecimento` | RF07 | 200, 400, 404, 409 |
 | GET | `/api/relatorios/faltas?inicio=&fim=` | RF08 | 200, 400 |
 
-Erros sempre no formato `{ "erro": "mensagem em português" }`.
+Todas as outras rotas exigem `Authorization: Bearer <token>` e devolvem **401** sem ele, com token adulterado
+ou vencido (8 horas). Erros sempre no formato `{ "erro": "mensagem em português" }`.

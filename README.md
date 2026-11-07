@@ -29,7 +29,7 @@ simples, com as regras de funcionamento da UBS validadas pelo sistema.
 | RF07 | Registrar comparecimento ou falta | ✅ Implementado (v0.3.0) |
 | RNF04 | Tela web da recepção (responsiva) | ✅ Implementado (v0.3.0) |
 | RF08 | Relatório de faltas por especialidade e período | ✅ Implementado (v0.4.0) |
-| RNF05 | Login da recepção | 🕒 Planejado (v0.4.0, [#19](https://github.com/Everson9/agenda-saude-ubs/issues/19)) |
+| RNF05 | Login da recepção (senha com hash scrypt, sessão de 8 h) | ✅ Implementado (v0.4.0) |
 
 ## 🧰 Stack
 
@@ -64,10 +64,16 @@ npm run dev
 Abra **http://localhost:3000** para usar a tela da recepção. Os dados ficam em `data/db.json`,
 criado na primeira gravação.
 
+**Login local:** usuário `recepcao`, senha `recepcao123`. Essa senha só vale para rodar na sua máquina, e o
+servidor avisa no log quando está usando ela. Em qualquer ambiente publicado, defina as variáveis abaixo.
+
 | Variável | Padrão | Uso |
 |---|---|---|
 | `PORT` | `3000` | Porta HTTP |
 | `DB_ARQUIVO` | `data/db.json` | Arquivo onde os dados são salvos |
+| `AUTH_USUARIO` | `recepcao` | Usuário da recepção |
+| `AUTH_SENHA_HASH` | senha de desenvolvimento | Hash da senha, gerado com `npm run hash-senha -- "sua senha"` |
+| `AUTH_SEGREDO` | aleatório a cada início | Segredo que assina os tokens (sem ele, as sessões caem quando o servidor reinicia) |
 
 ### Testes e lint
 
@@ -92,13 +98,15 @@ Um PR só entra na `develop` com todos os portões verdes no GitHub Actions:
 ### Exemplo de uso da API
 
 ```bash
-curl -X POST localhost:3000/api/pacientes -H "content-type: application/json" \
+TOKEN=$(curl -s -X POST localhost:3000/api/auth/login -H "content-type: application/json" \n  -d '{"usuario":"recepcao","senha":"recepcao123"}' | node -pe "JSON.parse(require('fs').readFileSync(0)).token")
+
+curl -X POST localhost:3000/api/pacientes -H "content-type: application/json" -H "authorization: Bearer $TOKEN" \
   -d '{"nome":"Maria da Silva","cartao_sus":"898001234567890","telefone":"87999990000","data_nascimento":"1980-05-12"}'
 
-curl -X POST localhost:3000/api/agendamentos -H "content-type: application/json" \
+curl -X POST localhost:3000/api/agendamentos -H "content-type: application/json" -H "authorization: Bearer $TOKEN" \
   -d '{"paciente_id":1,"especialidade_id":1,"data_hora":"2026-11-16T09:00"}'
 
-curl "localhost:3000/api/agendamentos?data=2026-11-16"
+curl -H "authorization: Bearer $TOKEN" "localhost:3000/api/agendamentos?data=2026-11-16"
 ```
 
 A lista completa de rotas está em [docs/arquitetura.md](docs/arquitetura.md#api).
