@@ -86,6 +86,8 @@ Um PR só entra na `develop` com todos os portões verdes no GitHub Actions:
 | Padrão de código | ESLint | zero erros |
 | Testes | `node:test` em Node 20 e 22 | todos passando |
 | Cobertura | `node --test --experimental-test-coverage` | linhas ≥ 80%, funções ≥ 80%, ramos ≥ 70% |
+| Segredos vazados | [Gitleaks](https://github.com/gitleaks/gitleaks) | nenhum segredo no histórico inteiro |
+| Dependências | `npm audit` | nenhuma vulnerabilidade alta ou crítica |
 
 ### Exemplo de uso da API
 
