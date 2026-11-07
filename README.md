@@ -194,7 +194,8 @@ e as notas em [Releases](https://github.com/Everson9/agenda-saude-ubs/releases).
 - [x] **v0.1.0**: especificação (charter, requisitos, casos de uso, user stories) e estrutura do projeto
 - [x] **v0.2.0**: persistência, pacientes e especialidades
 - [x] **v0.3.0**: agendamento completo, tela da recepção, testes e CI
-- [ ] **v0.4.0**: relatório de faltas (#18) e login da recepção (#19)
+- [x] **v0.4.0**: relatório de faltas (#18), login da recepção (#19), gate de cobertura (#42) e varredura de segurança (#43)
+- [ ] **v0.5.0** (Week_02): itens da avaliação técnica: concorrência (#48), LGPD (#49), rastreabilidade (#50), Dependabot (#51), `.env.example` (#52), índice de docs (#53), erro padronizado (#54), desempenho (#55), acessibilidade (#56), logs (#57) e Docker (#58)
 
 ## 📄 Licença
 
