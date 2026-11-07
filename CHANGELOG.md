@@ -3,6 +3,18 @@
 Todas as mudanças relevantes deste projeto. Formato baseado em
 [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.4.0] - 2026-11-07
+
+### Adicionado
+- Relatório de faltas por especialidade e período, na API e na tela (RF08) (#18).
+- Login da recepção com senha em hash scrypt e token de 8 horas. Toda a API exige login, exceto `/api/saude` (RNF05) (#19).
+- Gate de cobertura no CI: linhas e funções acima de 80%, ramos acima de 70% (#42).
+- Job de segurança no CI com Gitleaks e `npm audit` (#43).
+- Teste de persistência em arquivo e escrita atômica (RNF02) (#42).
+
+### Corrigido
+- O atributo `hidden` era ignorado pelo `display: grid` do `main` na tela (#19).
+
 ## [0.3.1] - 2026-11-07
 
 ### Corrigido
