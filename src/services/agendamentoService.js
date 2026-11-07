@@ -59,5 +59,21 @@ export function criarAgendamentoService({ agendamentos, pacientes, especialidade
         criado_em: agoraTexto(),
       });
     },
+
+    // RF05
+    listar({ data, especialidade_id: especialidadeId, paciente_id: pacienteId } = {}) {
+      if (data && !dataValida(data)) throw requisicaoInvalida('data deve estar no formato AAAA-MM-DD');
+      return agendamentos
+        .todos()
+        .filter((a) => !data || a.data_hora.startsWith(data))
+        .filter((a) => !especialidadeId || a.especialidade_id === Number(especialidadeId))
+        .filter((a) => !pacienteId || a.paciente_id === Number(pacienteId))
+        .sort((a, b) => a.data_hora.localeCompare(b.data_hora))
+        .map((a) => ({
+          ...a,
+          paciente: pacientes.porId(a.paciente_id)?.nome,
+          especialidade: especialidades.porId(a.especialidade_id)?.nome,
+        }));
+    },
   };
 }
