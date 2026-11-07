@@ -1,0 +1,21 @@
+# dependências
+node_modules/
+
+# dados locais (podem ter dado de paciente: nunca versionar)
+data/
+*.json.tmp
+
+# ambiente e segredos
+.env
+.env.*
+
+# logs e temporários
+*.log
+npm-debug.log*
+coverage/
+.DS_Store
+Thumbs.db
+
+# editores
+.vscode/
+.idea/
