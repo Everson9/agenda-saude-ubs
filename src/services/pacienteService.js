@@ -24,5 +24,20 @@ export function criarPacienteService({ pacientes, agora }) {
       if (pacientes.porCartaoSus(dados.cartao_sus)) throw conflito('já existe paciente com este cartão SUS');
       return pacientes.criar(dados);
     },
+
+    // RF02
+    listar(busca = '') {
+      const termo = busca.trim().toLowerCase();
+      return pacientes
+        .todos()
+        .filter((p) => !termo || p.nome.toLowerCase().includes(termo) || p.cartao_sus.includes(termo))
+        .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+    },
+
+    obter(id) {
+      const paciente = pacientes.porId(id);
+      if (!paciente) throw naoEncontrado('paciente não encontrado');
+      return paciente;
+    },
   };
 }
