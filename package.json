@@ -1,19 +1,25 @@
 {
   "name": "agenda-saude-ubs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "API e tela simples para agendamento de consultas numa Unidade Básica de Saúde (UBS).",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test \"tests/**/*.test.js\"",
+    "test": "node --test",
     "lint": "eslint ."
   },
   "engines": {
     "node": ">=20"
   },
-  "keywords": ["saude", "ubs", "agendamento", "sus", "express"],
+  "keywords": [
+    "saude",
+    "ubs",
+    "agendamento",
+    "sus",
+    "express"
+  ],
   "author": "Everson José",
   "license": "MIT",
   "dependencies": {

@@ -3,6 +3,11 @@
 Todas as mudanças relevantes deste projeto. Formato baseado em
 [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.3.1] - 2026-11-07
+
+### Corrigido
+- CI: `npm test` falhava no Node 20 porque o `node --test` dessa versão não expande glob (#40).
+
 ## [0.3.0] - 2026-11-07
 
 ### Adicionado
