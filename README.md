@@ -28,7 +28,7 @@ simples, com as regras de funcionamento da UBS validadas pelo sistema.
 | RF06 | Cancelar com motivo | ✅ Implementado (v0.3.0) |
 | RF07 | Registrar comparecimento ou falta | ✅ Implementado (v0.3.0) |
 | RNF04 | Tela web da recepção (responsiva) | ✅ Implementado (v0.3.0) |
-| RF08 | Relatório de faltas por especialidade | 🕒 Planejado (v0.4.0, [#18](https://github.com/Everson9/agenda-saude-ubs/issues/18)) |
+| RF08 | Relatório de faltas por especialidade e período | ✅ Implementado (v0.4.0) |
 | RNF05 | Login da recepção | 🕒 Planejado (v0.4.0, [#19](https://github.com/Everson9/agenda-saude-ubs/issues/19)) |
 
 ## 🧰 Stack

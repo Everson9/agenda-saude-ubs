@@ -118,7 +118,7 @@ Cenário: antes do horário
   Então recebo um erro 400
 ```
 
-## US07 — Relatório de faltas ([RF08]) · issue #18 · planejada para a v0.4.0
+## US07 — Relatório de faltas ([RF08]) · issue #18
 
 **Como** coordenadora da UBS, **quero** ver a taxa de faltas por especialidade no mês **para que** eu
 decida onde fazer lembrete ou encaixe.
