@@ -27,3 +27,21 @@ jobs:
       - name: Testes com gate de cobertura
         if: matrix.node == 22
         run: npm run test:coverage
+
+  seguranca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # o Gitleaks varre o histórico inteiro, não só o último commit
+      - name: Gitleaks (segredos vazados)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: npm audit (dependências vulneráveis)
+        run: npm audit --audit-level=high
