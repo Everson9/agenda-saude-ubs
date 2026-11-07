@@ -10,9 +10,20 @@
   <header>
     <h1>Agenda Saúde UBS</h1>
     <p>Recepção: cadastro de pacientes e agenda do dia</p>
+    <button id="sair" class="secundario" type="button" hidden>Sair</button>
   </header>
 
-  <main>
+  <section id="tela-login" class="login" aria-labelledby="t-login" hidden>
+    <h2 id="t-login">Entrar</h2>
+    <form id="form-login">
+      <label>Usuário <input name="usuario" autocomplete="username" required></label>
+      <label>Senha <input name="senha" type="password" autocomplete="current-password" required></label>
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="aviso-login" class="erro" role="alert"></p>
+  </section>
+
+  <main id="app" hidden>
     <section aria-labelledby="t-paciente">
       <h2 id="t-paciente">Novo paciente</h2>
       <form id="form-paciente">

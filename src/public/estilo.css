@@ -30,3 +30,9 @@ th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--borda); 
 td .acoes { display: flex; gap: 6px; flex-wrap: wrap; }
 #aviso { min-height: 1.5em; font-weight: 600; }
 #aviso.erro { color: var(--erro); }
+header { position: relative; }
+#sair { position: absolute; top: 20px; right: 24px; }
+.login { max-width: 420px; margin: 32px auto; }
+.login form { grid-template-columns: 1fr; }
+.login .erro, #aviso.erro { color: var(--erro); }
+[hidden] { display: none !important; } /* senão o display:grid do main ganha do atributo hidden */
