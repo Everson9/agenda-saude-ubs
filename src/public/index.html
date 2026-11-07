@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agenda Saúde UBS</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header>
+    <h1>Agenda Saúde UBS</h1>
+    <p>Recepção: cadastro de pacientes e agenda do dia</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="t-paciente">
+      <h2 id="t-paciente">Novo paciente</h2>
+      <form id="form-paciente">
+        <label>Nome <input name="nome" required minlength="3"></label>
+        <label>Cartão SUS <input name="cartao_sus" required inputmode="numeric" placeholder="15 dígitos"></label>
+        <label>Telefone <input name="telefone" inputmode="tel"></label>
+        <label>Nascimento <input name="data_nascimento" type="date" required></label>
+        <button type="submit">Cadastrar</button>
+      </form>
+    </section>
+
+    <section aria-labelledby="t-agendar">
+      <h2 id="t-agendar">Agendar consulta</h2>
+      <form id="form-agendar">
+        <label>Paciente <select name="paciente_id" required></select></label>
+        <label>Especialidade <select name="especialidade_id" required></select></label>
+        <label>Data e hora <input name="data_hora" type="datetime-local" step="300" required></label>
+        <button type="submit">Agendar</button>
+      </form>
+    </section>
+
+    <section aria-labelledby="t-agenda">
+      <h2 id="t-agenda">Agenda</h2>
+      <label>Dia <input id="filtro-dia" type="date"></label>
+      <table>
+        <thead><tr><th>Hora</th><th>Paciente</th><th>Especialidade</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="agenda"></tbody>
+      </table>
+    </section>
+
+    <p id="aviso" role="status" aria-live="polite"></p>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
