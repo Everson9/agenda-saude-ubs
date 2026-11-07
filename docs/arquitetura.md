@@ -135,5 +135,6 @@ stateDiagram-v2
 | GET | `/api/agendamentos?data=&especialidade_id=&paciente_id=` | RF05 | 200, 400 |
 | PATCH | `/api/agendamentos/:id/cancelar` | RF06 | 200, 400, 404, 409 |
 | PATCH | `/api/agendamentos/:id/comparecimento` | RF07 | 200, 400, 404, 409 |
+| GET | `/api/relatorios/faltas?inicio=&fim=` | RF08 | 200, 400 |
 
 Erros sempre no formato `{ "erro": "mensagem em português" }`.

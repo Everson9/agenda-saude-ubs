@@ -6,9 +6,11 @@ import { criarEspecialidadeRepository } from './repositories/especialidadeReposi
 import { criarAgendamentoRepository } from './repositories/agendamentoRepository.js';
 import { criarPacienteService } from './services/pacienteService.js';
 import { criarAgendamentoService } from './services/agendamentoService.js';
+import { criarRelatorioService } from './services/relatorioService.js';
 import { pacienteRoutes } from './routes/pacienteRoutes.js';
 import { especialidadeRoutes } from './routes/especialidadeRoutes.js';
 import { agendamentoRoutes } from './routes/agendamentoRoutes.js';
+import { relatorioRoutes } from './routes/relatorioRoutes.js';
 import { rotaNaoEncontrada, tratarErros } from './middlewares/tratarErros.js';
 
 /**
@@ -22,6 +24,7 @@ export function criarApp({ store = criarStore(), agora = () => new Date() } = {}
 
   const pacienteService = criarPacienteService({ pacientes, agora });
   const agendamentoService = criarAgendamentoService({ agendamentos, pacientes, especialidades, agora });
+  const relatorioService = criarRelatorioService({ agendamentos, especialidades });
 
   const app = express();
   app.use(express.json());
@@ -31,6 +34,7 @@ export function criarApp({ store = criarStore(), agora = () => new Date() } = {}
   app.use('/api/pacientes', pacienteRoutes(pacienteService));
   app.use('/api/especialidades', especialidadeRoutes(especialidades));
   app.use('/api/agendamentos', agendamentoRoutes(agendamentoService));
+  app.use('/api/relatorios', relatorioRoutes(relatorioService));
   app.use('/api', rotaNaoEncontrada);
   app.use(tratarErros);
 

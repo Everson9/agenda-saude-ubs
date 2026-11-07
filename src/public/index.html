@@ -43,6 +43,19 @@
       </table>
     </section>
 
+    <section aria-labelledby="t-relatorio">
+      <h2 id="t-relatorio">Relatório de faltas</h2>
+      <form id="form-relatorio">
+        <label>De <input name="inicio" type="date" required></label>
+        <label>Até <input name="fim" type="date" required></label>
+        <button type="submit">Gerar</button>
+      </form>
+      <table>
+        <thead><tr><th>Especialidade</th><th>Finalizadas</th><th>Faltas</th><th>Taxa de faltas</th></tr></thead>
+        <tbody id="relatorio"></tbody>
+      </table>
+    </section>
+
     <p id="aviso" role="status" aria-live="polite"></p>
   </main>
 
