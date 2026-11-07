@@ -7,14 +7,14 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 
 | Código | Requisito | Prioridade | Issue | Status |
 |---|---|---|---|---|
-| [RF01] | O sistema deve permitir cadastrar paciente com nome, cartão SUS (15 dígitos, único), telefone e data de nascimento. | Alta | #7 | 📋 Planejado |
-| [RF02] | O sistema deve permitir listar pacientes em ordem alfabética e buscar por parte do nome ou do cartão SUS. | Alta | #8 | 📋 Planejado |
-| [RF03] | O sistema deve listar as especialidades atendidas e a duração da consulta de cada uma. | Média | #9 | 📋 Planejado |
-| [RF04] | O sistema deve permitir agendar uma consulta para um paciente numa especialidade, numa data e hora. | Alta | #10 | 📋 Planejado |
-| [RF05] | O sistema deve exibir a agenda filtrando por dia, especialidade ou paciente, em ordem de horário. | Alta | #11 | 📋 Planejado |
-| [RF06] | O sistema deve permitir cancelar um agendamento informando o motivo, liberando o horário. | Alta | #12 | 📋 Planejado |
-| [RF07] | O sistema deve permitir registrar se o paciente compareceu (`realizado`) ou faltou (`faltou`). | Média | #13 | 📋 Planejado |
-| [RF08] | O sistema deve gerar um relatório de faltas por especialidade e período. | Baixa | #18 | 📋 Planejado |
+| [RF01] | O sistema deve permitir cadastrar paciente com nome, cartão SUS (15 dígitos, único), telefone e data de nascimento. | Alta | #7 | ✅ v0.2.0 |
+| [RF02] | O sistema deve permitir listar pacientes em ordem alfabética e buscar por parte do nome ou do cartão SUS. | Alta | #8 | ✅ v0.2.0 |
+| [RF03] | O sistema deve listar as especialidades atendidas e a duração da consulta de cada uma. | Média | #9 | ✅ v0.2.0 |
+| [RF04] | O sistema deve permitir agendar uma consulta para um paciente numa especialidade, numa data e hora. | Alta | #10 | ✅ v0.3.0 |
+| [RF05] | O sistema deve exibir a agenda filtrando por dia, especialidade ou paciente, em ordem de horário. | Alta | #11 | ✅ v0.3.0 |
+| [RF06] | O sistema deve permitir cancelar um agendamento informando o motivo, liberando o horário. | Alta | #12 | ✅ v0.3.0 |
+| [RF07] | O sistema deve permitir registrar se o paciente compareceu (`realizado`) ou faltou (`faltou`). | Média | #13 | ✅ v0.3.0 |
+| [RF08] | O sistema deve gerar um relatório de faltas por especialidade e período. | Baixa | #18 | 🕒 v0.4.0 |
 
 ## Regras de negócio (RN)
 
