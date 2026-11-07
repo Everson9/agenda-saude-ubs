@@ -75,5 +75,12 @@ export function criarAgendamentoService({ agendamentos, pacientes, especialidade
           especialidade: especialidades.porId(a.especialidade_id)?.nome,
         }));
     },
+
+    // RF06
+    cancelar(id, motivo = '') {
+      const ag = obterAtivo(id);
+      if (!String(motivo).trim()) throw requisicaoInvalida('informe o motivo do cancelamento');
+      return agendamentos.atualizar(ag.id, { status: 'cancelado', motivo_cancelamento: String(motivo).trim() });
+    },
   };
 }
