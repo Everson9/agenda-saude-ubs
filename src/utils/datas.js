@@ -1,6 +1,9 @@
-/** AAAA-MM-DD. */
+/** AAAA-MM-DD que existe no calendário (rejeita 2026-02-31). */
 export function dataValida(texto) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(texto);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(texto)) return false;
+  const [a, m, d] = texto.split('-').map(Number);
+  const data = new Date(Date.UTC(a, m - 1, d));
+  return data.getUTCFullYear() === a && data.getUTCMonth() === m - 1 && data.getUTCDate() === d;
 }
 
 /** AAAA-MM-DDTHH:mm com data existente e hora válida. */
