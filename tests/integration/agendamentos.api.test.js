@@ -45,7 +45,15 @@ test('RF06: PATCH /cancelar exige motivo', async () => {
 test('RF07: PATCH /comparecimento depois do horário', async () => {
   assert.equal((await api.patch('/api/agendamentos/2/comparecimento', { status: 'realizado' })).status, 400);
   api.relogio.ir(new Date(2026, 10, 10, 12, 0));
+  await api.logar(); // o token anterior venceu (8 horas)
   const { status, corpo } = await api.patch('/api/agendamentos/2/comparecimento', { status: 'realizado' });
   assert.equal(status, 200);
   assert.equal(corpo.status, 'realizado');
+});
+
+test('RF08: GET /api/relatorios/faltas soma o comparecimento registrado', async () => {
+  const { status, corpo } = await api.get('/api/relatorios/faltas?inicio=2026-11-01&fim=2026-11-30');
+  assert.equal(status, 200);
+  assert.deepEqual(corpo.total, { finalizados: 1, faltas: 0, taxa_faltas_pct: 0 });
+  assert.equal((await api.get('/api/relatorios/faltas?inicio=2026-11-01')).status, 400);
 });

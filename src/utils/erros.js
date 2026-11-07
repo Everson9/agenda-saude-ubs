@@ -9,3 +9,4 @@ export class ErroAplicacao extends Error {
 export const requisicaoInvalida = (msg) => new ErroAplicacao(400, msg);
 export const naoEncontrado = (msg) => new ErroAplicacao(404, msg);
 export const conflito = (msg) => new ErroAplicacao(409, msg);
+export const naoAutorizado = (msg) => new ErroAplicacao(401, msg);

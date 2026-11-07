@@ -28,8 +28,8 @@ simples, com as regras de funcionamento da UBS validadas pelo sistema.
 | RF06 | Cancelar com motivo | ✅ Implementado (v0.3.0) |
 | RF07 | Registrar comparecimento ou falta | ✅ Implementado (v0.3.0) |
 | RNF04 | Tela web da recepção (responsiva) | ✅ Implementado (v0.3.0) |
-| RF08 | Relatório de faltas por especialidade | 🕒 Planejado (v0.4.0, [#18](https://github.com/Everson9/agenda-saude-ubs/issues/18)) |
-| RNF05 | Login da recepção | 🕒 Planejado (v0.4.0, [#19](https://github.com/Everson9/agenda-saude-ubs/issues/19)) |
+| RF08 | Relatório de faltas por especialidade e período | ✅ Implementado (v0.4.0) |
+| RNF05 | Login da recepção (senha com hash scrypt, sessão de 8 h) | ✅ Implementado (v0.4.0) |
 
 ## 🧰 Stack
 
@@ -64,28 +64,49 @@ npm run dev
 Abra **http://localhost:3000** para usar a tela da recepção. Os dados ficam em `data/db.json`,
 criado na primeira gravação.
 
+**Login local:** usuário `recepcao`, senha `recepcao123`. Essa senha só vale para rodar na sua máquina, e o
+servidor avisa no log quando está usando ela. Em qualquer ambiente publicado, defina as variáveis abaixo.
+
 | Variável | Padrão | Uso |
 |---|---|---|
 | `PORT` | `3000` | Porta HTTP |
 | `DB_ARQUIVO` | `data/db.json` | Arquivo onde os dados são salvos |
+| `AUTH_USUARIO` | `recepcao` | Usuário da recepção |
+| `AUTH_SENHA_HASH` | senha de desenvolvimento | Hash da senha, gerado com `npm run hash-senha -- "sua senha"` |
+| `AUTH_SEGREDO` | aleatório a cada início | Segredo que assina os tokens (sem ele, as sessões caem quando o servidor reinicia) |
 
 ### Testes e lint
 
 ```bash
-npm test       # 20 testes: unitários (tests/unit) e de integração (tests/integration)
-npm run lint   # ESLint
+npm test                # testes unitários (tests/unit) e de integração (tests/integration)
+npm run test:coverage   # mesmos testes + gate de cobertura (Node 22 ou superior)
+npm run lint            # ESLint
 ```
+
+### Quality gates
+
+Um PR só entra na `develop` com todos os portões verdes no GitHub Actions:
+
+| Portão | Ferramenta | Critério |
+|---|---|---|
+| Padrão de código | ESLint | zero erros |
+| Testes | `node:test` em Node 20 e 22 | todos passando |
+| Cobertura | `node --test --experimental-test-coverage` | linhas ≥ 80%, funções ≥ 80%, ramos ≥ 70% |
+| Segredos vazados | [Gitleaks](https://github.com/gitleaks/gitleaks) | nenhum segredo no histórico inteiro |
+| Dependências | `npm audit` | nenhuma vulnerabilidade alta ou crítica |
 
 ### Exemplo de uso da API
 
 ```bash
-curl -X POST localhost:3000/api/pacientes -H "content-type: application/json" \
+TOKEN=$(curl -s -X POST localhost:3000/api/auth/login -H "content-type: application/json" \n  -d '{"usuario":"recepcao","senha":"recepcao123"}' | node -pe "JSON.parse(require('fs').readFileSync(0)).token")
+
+curl -X POST localhost:3000/api/pacientes -H "content-type: application/json" -H "authorization: Bearer $TOKEN" \
   -d '{"nome":"Maria da Silva","cartao_sus":"898001234567890","telefone":"87999990000","data_nascimento":"1980-05-12"}'
 
-curl -X POST localhost:3000/api/agendamentos -H "content-type: application/json" \
+curl -X POST localhost:3000/api/agendamentos -H "content-type: application/json" -H "authorization: Bearer $TOKEN" \
   -d '{"paciente_id":1,"especialidade_id":1,"data_hora":"2026-11-16T09:00"}'
 
-curl "localhost:3000/api/agendamentos?data=2026-11-16"
+curl -H "authorization: Bearer $TOKEN" "localhost:3000/api/agendamentos?data=2026-11-16"
 ```
 
 A lista completa de rotas está em [docs/arquitetura.md](docs/arquitetura.md#api).
@@ -173,7 +194,8 @@ e as notas em [Releases](https://github.com/Everson9/agenda-saude-ubs/releases).
 - [x] **v0.1.0**: especificação (charter, requisitos, casos de uso, user stories) e estrutura do projeto
 - [x] **v0.2.0**: persistência, pacientes e especialidades
 - [x] **v0.3.0**: agendamento completo, tela da recepção, testes e CI
-- [ ] **v0.4.0**: relatório de faltas (#18) e login da recepção (#19)
+- [x] **v0.4.0**: relatório de faltas (#18), login da recepção (#19), gate de cobertura (#42) e varredura de segurança (#43)
+- [ ] **v0.5.0** (Week_02): itens da avaliação técnica: concorrência (#48), LGPD (#49), rastreabilidade (#50), Dependabot (#51), `.env.example` (#52), índice de docs (#53), erro padronizado (#54), desempenho (#55), acessibilidade (#56), logs (#57) e Docker (#58)
 
 ## 📄 Licença
 

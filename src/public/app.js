@@ -1,12 +1,32 @@
 const $ = (sel) => document.querySelector(sel);
 
+// o token vive só nesta aba (sessionStorage): fechar o navegador encerra a sessão
+const sessao = {
+  ler: () => { try { return sessionStorage.getItem('token'); } catch { return null; } },
+  gravar: (t) => { try { sessionStorage.setItem('token', t); } catch { /* sem storage: vale só até recarregar */ } },
+  limpar: () => { try { sessionStorage.removeItem('token'); } catch { /* idem */ } },
+};
+let token = sessao.ler();
+
+function mostrarLogin(mensagem = '') {
+  token = null;
+  sessao.limpar();
+  $('#app').hidden = true;
+  $('#sair').hidden = true;
+  $('#tela-login').hidden = false;
+  $('#aviso-login').textContent = mensagem;
+}
+
 async function api(metodo, caminho, corpo) {
+  const headers = { 'content-type': 'application/json' };
+  if (token) headers.authorization = `Bearer ${token}`;
   const resp = await fetch(caminho, {
     method: metodo,
-    headers: { 'content-type': 'application/json' },
+    headers,
     body: corpo ? JSON.stringify(corpo) : undefined,
   });
   const dados = await resp.json();
+  if (resp.status === 401 && !caminho.startsWith('/api/auth')) mostrarLogin(dados.erro);
   if (!resp.ok) throw new Error(dados.erro);
   return dados;
 }
@@ -95,6 +115,60 @@ enviar($('#form-agendar'), async (dados) => {
   await carregarAgenda();
 });
 
+function linha(celulas) {
+  const tr = document.createElement('tr');
+  for (const texto of celulas) {
+    const td = document.createElement('td');
+    td.textContent = texto;
+    tr.append(td);
+  }
+  return tr;
+}
+
+$('#form-relatorio').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const { inicio, fim } = Object.fromEntries(new FormData(ev.target));
+  try {
+    const rel = await api('GET', `/api/relatorios/faltas?inicio=${inicio}&fim=${fim}`);
+    const pct = (n) => `${String(n).replace('.', ',')}%`;
+    const total = linha(['Total', rel.total.finalizados, rel.total.faltas, pct(rel.total.taxa_faltas_pct)]);
+    total.style.fontWeight = '700';
+    $('#relatorio').replaceChildren(
+      ...rel.por_especialidade.map((l) => linha([l.especialidade, l.finalizados, l.faltas, pct(l.taxa_faltas_pct)])),
+      total,
+    );
+    avisar('Relatório gerado.');
+  } catch (e) {
+    avisar(e.message, true);
+  }
+});
+
+async function iniciar() {
+  $('#tela-login').hidden = true;
+  $('#app').hidden = false;
+  $('#sair').hidden = false;
+  try {
+    await carregarListas();
+    await carregarAgenda();
+  } catch (e) {
+    avisar(e.message, true);
+  }
+}
+
+$('#form-login').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  try {
+    const { token: novo } = await api('POST', '/api/auth/login', Object.fromEntries(new FormData(ev.target)));
+    token = novo;
+    sessao.gravar(novo);
+    ev.target.reset();
+    await iniciar();
+  } catch (e) {
+    $('#aviso-login').textContent = e.message;
+  }
+});
+
+$('#sair').addEventListener('click', () => mostrarLogin());
 $('#filtro-dia').value = new Date().toLocaleDateString('sv-SE');
 $('#filtro-dia').addEventListener('change', carregarAgenda);
-carregarListas().then(carregarAgenda).catch((e) => avisar(e.message, true));
+if (token) iniciar(); else mostrarLogin();

@@ -1,6 +1,6 @@
 {
   "name": "agenda-saude-ubs",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "API e tela simples para agendamento de consultas numa Unidade Básica de Saúde (UBS).",
   "type": "module",
   "main": "src/server.js",
@@ -8,7 +8,9 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "node --test",
-    "lint": "eslint ."
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-exclude=tests/** --test-coverage-lines=80 --test-coverage-functions=80 --test-coverage-branches=70",
+    "lint": "eslint .",
+    "hash-senha": "node scripts/gerar-hash-senha.js"
   },
   "engines": {
     "node": ">=20"

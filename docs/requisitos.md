@@ -14,7 +14,7 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 | [RF05] | O sistema deve exibir a agenda filtrando por dia, especialidade ou paciente, em ordem de horário. | Alta | #11 | ✅ v0.3.0 |
 | [RF06] | O sistema deve permitir cancelar um agendamento informando o motivo, liberando o horário. | Alta | #12 | ✅ v0.3.0 |
 | [RF07] | O sistema deve permitir registrar se o paciente compareceu (`realizado`) ou faltou (`faltou`). | Média | #13 | ✅ v0.3.0 |
-| [RF08] | O sistema deve gerar um relatório de faltas por especialidade e período. | Baixa | #18 | 🕒 v0.4.0 |
+| [RF08] | O sistema deve gerar um relatório de faltas por especialidade e período. | Baixa | #18 | ✅ v0.4.0 |
 
 ## Regras de negócio (RN)
 
@@ -36,7 +36,7 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 | [RNF02] | Persistência / Confiabilidade | Os dados devem sobreviver a reinicializações, e uma queda no meio da escrita não pode corromper o arquivo. | `jsonStore` grava em `.tmp` e renomeia |
 | [RNF03] | Portabilidade | Deve rodar em Windows, Linux e macOS com Node.js 20 ou superior, sem banco externo. | CI no Ubuntu e desenvolvimento no Windows |
 | [RNF04] | Usabilidade | A tela da recepção deve funcionar no celular e no computador, com mensagens de erro em português. | Layout responsivo e erros da API em português |
-| [RNF05] | Segurança / LGPD | Dados reais de pacientes não podem ir para o repositório, e a API deve validar toda entrada. | `data/` no `.gitignore` e validação nos services |
+| [RNF05] | Segurança / LGPD | Dados reais de pacientes não podem ir para o repositório, e a API deve validar toda entrada. | `data/` no `.gitignore`, validação nos services e login com senha em hash scrypt e token de 8 h (v0.4.0, #19) |
 | [RNF06] | Manutenibilidade | O código deve ser separado em camadas (rotas, services, repositories) e passar no ESLint. | `npm run lint` no CI |
 | [RNF07] | Testabilidade | As regras de negócio devem ter testes automatizados rodando a cada PR. | `npm test` no GitHub Actions |
 
@@ -51,4 +51,4 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 | RF05 | US04 | UC03 | #11 | `agendamentoService.listar` | `integration/agendamentos.api.test.js` |
 | RF06 | US05 | UC04 | #12 | `agendamentoService.cancelar` | `unit/agendamentoService.test.js` |
 | RF07 | US06 | UC05 | #13 | `agendamentoService.registrarComparecimento` | `unit/agendamentoService.test.js` |
-| RF08 | US07 | — | #18 | planejado | planejado |
+| RF08 | US07 | — | #18 | `services/relatorioService.js` | `unit/relatorioService.test.js` |
