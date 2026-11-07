@@ -95,6 +95,34 @@ enviar($('#form-agendar'), async (dados) => {
   await carregarAgenda();
 });
 
+function linha(celulas) {
+  const tr = document.createElement('tr');
+  for (const texto of celulas) {
+    const td = document.createElement('td');
+    td.textContent = texto;
+    tr.append(td);
+  }
+  return tr;
+}
+
+$('#form-relatorio').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const { inicio, fim } = Object.fromEntries(new FormData(ev.target));
+  try {
+    const rel = await api('GET', `/api/relatorios/faltas?inicio=${inicio}&fim=${fim}`);
+    const pct = (n) => `${String(n).replace('.', ',')}%`;
+    const total = linha(['Total', rel.total.finalizados, rel.total.faltas, pct(rel.total.taxa_faltas_pct)]);
+    total.style.fontWeight = '700';
+    $('#relatorio').replaceChildren(
+      ...rel.por_especialidade.map((l) => linha([l.especialidade, l.finalizados, l.faltas, pct(l.taxa_faltas_pct)])),
+      total,
+    );
+    avisar('Relatório gerado.');
+  } catch (e) {
+    avisar(e.message, true);
+  }
+});
+
 $('#filtro-dia').value = new Date().toLocaleDateString('sv-SE');
 $('#filtro-dia').addEventListener('change', carregarAgenda);
 carregarListas().then(carregarAgenda).catch((e) => avisar(e.message, true));
