@@ -1,0 +1,32 @@
+:root {
+  --fundo: #f6f8fa;
+  --superficie: #ffffff;
+  --texto: #1b2733;
+  --texto-apoio: #4a5866;
+  --primaria: #0b6b4f;
+  --borda: #d4dce3;
+  --erro: #b42318;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--texto);
+  background: var(--fundo);
+}
+
+body { margin: 0; }
+header { background: var(--primaria); color: #fff; padding: 20px 24px; }
+header h1 { margin: 0; font-size: 26px; font-weight: 700; }
+header p { margin: 4px 0 0; font-weight: 600; }
+main { max-width: 960px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; }
+section { background: var(--superficie); border: 1px solid var(--borda); border-radius: 8px; padding: 16px 20px; }
+h2 { margin: 0 0 12px; font-size: 19px; font-weight: 700; }
+form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: end; }
+label { display: grid; gap: 4px; font-weight: 600; color: var(--texto-apoio); font-size: 15px; }
+input, select { font: inherit; padding: 8px 10px; border: 1px solid var(--borda); border-radius: 6px; color: var(--texto); }
+button { font: inherit; font-weight: 700; padding: 9px 14px; border: 0; border-radius: 6px; background: var(--primaria); color: #fff; cursor: pointer; }
+button.secundario { background: #e8eef3; color: var(--texto); }
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 15px; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--borda); }
+td .acoes { display: flex; gap: 6px; flex-wrap: wrap; }
+#aviso { min-height: 1.5em; font-weight: 600; }
+#aviso.erro { color: var(--erro); }

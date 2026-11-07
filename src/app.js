@@ -1,4 +1,5 @@
 import express from 'express';
+import { fileURLToPath } from 'node:url';
 import { criarStore } from './database/jsonStore.js';
 import { criarPacienteRepository } from './repositories/pacienteRepository.js';
 import { criarEspecialidadeRepository } from './repositories/especialidadeRepository.js';
@@ -24,6 +25,7 @@ export function criarApp({ store = criarStore(), agora = () => new Date() } = {}
 
   const app = express();
   app.use(express.json());
+  app.use(express.static(fileURLToPath(new URL('./public', import.meta.url))));
 
   app.get('/api/saude', (req, res) => res.json({ status: 'ok' }));
   app.use('/api/pacientes', pacienteRoutes(pacienteService));
