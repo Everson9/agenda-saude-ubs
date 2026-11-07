@@ -27,3 +27,28 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 | [RN05] | Não se agenda no passado. | RF04 |
 | [RN06] | Só agendamento com status `agendado` pode ser cancelado ou ter comparecimento registrado, e uma única vez. | RF06, RF07 |
 | [RN07] | O comparecimento só pode ser registrado depois do horário marcado. | RF07 |
+
+## Requisitos Não Funcionais (RNF)
+
+| Código | Categoria | Requisito | Como é verificado |
+|---|---|---|---|
+| [RNF01] | Desempenho | As operações da API devem responder em menos de 300 ms com até 5.000 agendamentos. | Operações em memória com escrita única por alteração |
+| [RNF02] | Persistência / Confiabilidade | Os dados devem sobreviver a reinicializações, e uma queda no meio da escrita não pode corromper o arquivo. | `jsonStore` grava em `.tmp` e renomeia |
+| [RNF03] | Portabilidade | Deve rodar em Windows, Linux e macOS com Node.js 20 ou superior, sem banco externo. | CI no Ubuntu e desenvolvimento no Windows |
+| [RNF04] | Usabilidade | A tela da recepção deve funcionar no celular e no computador, com mensagens de erro em português. | Layout responsivo e erros da API em português |
+| [RNF05] | Segurança / LGPD | Dados reais de pacientes não podem ir para o repositório, e a API deve validar toda entrada. | `data/` no `.gitignore` e validação nos services |
+| [RNF06] | Manutenibilidade | O código deve ser separado em camadas (rotas, services, repositories) e passar no ESLint. | `npm run lint` no CI |
+| [RNF07] | Testabilidade | As regras de negócio devem ter testes automatizados rodando a cada PR. | `npm test` no GitHub Actions |
+
+## Matriz de rastreabilidade
+
+| Requisito | User story | Caso de uso | Issue | Código | Teste |
+|---|---|---|---|---|---|
+| RF01 | US01 | UC01 | #7 | `services/pacienteService.js` `cadastrar` | `integration/pacientes.api.test.js` |
+| RF02 | US02 | UC01 | #8 | `pacienteService.listar` | `integration/pacientes.api.test.js` |
+| RF03 | US03 | UC02 | #9 | `routes/especialidadeRoutes.js` | `integration/pacientes.api.test.js` |
+| RF04 | US03 | UC02 | #10, #16 | `services/agendamentoService.js` `agendar` | `unit/agendamentoService.test.js` |
+| RF05 | US04 | UC03 | #11 | `agendamentoService.listar` | `integration/agendamentos.api.test.js` |
+| RF06 | US05 | UC04 | #12 | `agendamentoService.cancelar` | `unit/agendamentoService.test.js` |
+| RF07 | US06 | UC05 | #13 | `agendamentoService.registrarComparecimento` | `unit/agendamentoService.test.js` |
+| RF08 | US07 | — | #18 | planejado | planejado |
