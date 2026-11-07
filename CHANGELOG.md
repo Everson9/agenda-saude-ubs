@@ -3,6 +3,20 @@
 Todas as mudanças relevantes deste projeto. Formato baseado em
 [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.3.0] - 2026-11-07
+
+### Adicionado
+- Agendamento com grade da especialidade, horário de funcionamento, dia útil e conflitos (RF04) (#10).
+- Agenda filtrada por dia, especialidade ou paciente (RF05) (#11).
+- Cancelamento com motivo (RF06) (#12).
+- Registro de comparecimento ou falta (RF07) (#13).
+- Tela web da recepção (RNF04) (#14).
+- 20 testes automatizados (unitários e de integração) e CI no GitHub Actions com Node 20 e 22 (#15).
+- Documento de arquitetura (C4, camadas, classes, DER, estados e rotas) e README completo (#17).
+
+### Corrigido
+- Agendamento aceitava data inexistente no calendário, como 31/11 (#16).
+
 ## [0.2.0] - 2026-11-07
 
 ### Adicionado
