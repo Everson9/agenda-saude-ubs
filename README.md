@@ -72,9 +72,20 @@ criado na primeira gravação.
 ### Testes e lint
 
 ```bash
-npm test       # 20 testes: unitários (tests/unit) e de integração (tests/integration)
-npm run lint   # ESLint
+npm test                # testes unitários (tests/unit) e de integração (tests/integration)
+npm run test:coverage   # mesmos testes + gate de cobertura (Node 22 ou superior)
+npm run lint            # ESLint
 ```
+
+### Quality gates
+
+Um PR só entra na `develop` com todos os portões verdes no GitHub Actions:
+
+| Portão | Ferramenta | Critério |
+|---|---|---|
+| Padrão de código | ESLint | zero erros |
+| Testes | `node:test` em Node 20 e 22 | todos passando |
+| Cobertura | `node --test --experimental-test-coverage` | linhas ≥ 80%, funções ≥ 80%, ramos ≥ 70% |
 
 ### Exemplo de uso da API
 
