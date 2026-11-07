@@ -3,6 +3,14 @@
 Todas as mudanças relevantes deste projeto. Formato baseado em
 [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.2.0] - 2026-11-07
+
+### Adicionado
+- Persistência em arquivo JSON com escrita atômica (RNF02) (#6).
+- Cadastro de paciente com cartão SUS único (RF01) (#7).
+- Listagem e busca de pacientes (RF02) (#8).
+- Listagem de especialidades com duração da consulta (RF03) (#9).
+
 ## [0.1.0] - 2026-11-07
 
 ### Adicionado
