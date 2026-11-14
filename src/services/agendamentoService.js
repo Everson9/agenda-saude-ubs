@@ -13,23 +13,23 @@ export function criarAgendamentoService({ agendamentos, pacientes, especialidade
     if (!dataHoraValida(String(dataHora ?? ''))) {
       throw requisicaoInvalida('data_hora deve estar no formato AAAA-MM-DDTHH:mm');
     }
-    if (dataHora <= agoraTexto()) throw requisicaoInvalida('não é possível agendar no passado');
+    if (dataHora <= agoraTexto()) throw requisicaoInvalida('não é possível agendar no passado', 'HORARIO_NO_PASSADO');
     if (!funcionamento.diasUteis.includes(diaDaSemana(dataHora))) {
-      throw requisicaoInvalida('a UBS só atende de segunda a sexta');
+      throw requisicaoInvalida('a UBS só atende de segunda a sexta', 'FORA_DO_FUNCIONAMENTO');
     }
     const inicio = paraMinutos(dataHora.slice(11));
     if (inicio < ABERTURA || inicio + esp.duracao_min > FECHAMENTO) {
-      throw requisicaoInvalida(`horário fora do funcionamento (${funcionamento.abertura} às ${funcionamento.fechamento})`);
+      throw requisicaoInvalida(`horário fora do funcionamento (${funcionamento.abertura} às ${funcionamento.fechamento})`, 'FORA_DO_FUNCIONAMENTO');
     }
     if ((inicio - ABERTURA) % esp.duracao_min !== 0) {
-      throw requisicaoInvalida(`horário deve seguir a grade de ${esp.duracao_min} min a partir das ${funcionamento.abertura}`);
+      throw requisicaoInvalida(`horário deve seguir a grade de ${esp.duracao_min} min a partir das ${funcionamento.abertura}`, 'FORA_DA_GRADE');
     }
   }
 
   function obterAtivo(id) {
     const ag = agendamentos.porId(id);
     if (!ag) throw naoEncontrado('agendamento não encontrado');
-    if (ag.status !== 'agendado') throw conflito(`agendamento já está ${ag.status}`);
+    if (ag.status !== 'agendado') throw conflito(`agendamento já está ${ag.status}`, 'AGENDAMENTO_FINALIZADO');
     return ag;
   }
 
@@ -46,11 +46,11 @@ export function criarAgendamentoService({ agendamentos, pacientes, especialidade
 
       const ativos = agendamentos.ativos();
       if (ativos.some((a) => a.especialidade_id === esp.id && a.data_hora === dataHora)) {
-        throw conflito('horário já ocupado para esta especialidade');
+        throw conflito('horário já ocupado para esta especialidade', 'HORARIO_OCUPADO');
       }
       const mesmoDia = (a) => a.data_hora.slice(0, 10) === dataHora.slice(0, 10);
       if (ativos.some((a) => a.paciente_id === paciente.id && a.especialidade_id === esp.id && mesmoDia(a))) {
-        throw conflito('paciente já tem agendamento nesta especialidade neste dia');
+        throw conflito('paciente já tem agendamento nesta especialidade neste dia', 'PACIENTE_JA_AGENDADO_NO_DIA');
       }
 
       return agendamentos.criar({
