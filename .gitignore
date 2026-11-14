@@ -8,6 +8,7 @@ data/
 # ambiente e segredos
 .env
 .env.*
+!.env.example
 
 # logs e temporários
 *.log

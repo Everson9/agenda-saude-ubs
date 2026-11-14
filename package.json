@@ -13,7 +13,7 @@
     "hash-senha": "node scripts/gerar-hash-senha.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.12"
   },
   "keywords": [
     "saude",
