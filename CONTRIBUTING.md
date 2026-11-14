@@ -26,8 +26,10 @@
    | `chore` | Configuração, dependências, versão |
    | `ci` | Pipeline do GitHub Actions |
 
-4. Abra o **Pull Request para a `develop`** com `Closes #NN` na descrição. O CI precisa passar.
-5. **Release:** `release/X.Y.Z` sai da `develop`, atualiza o `CHANGELOG.md` e o `package.json`, entra
+4. Se a mudança altera regra, rota ou dado pessoal, atualize `docs/` no mesmo PR (ver a
+   [regra de sincronização](docs/README.md#regra-de-sincronização-docs--código)).
+5. Abra o **Pull Request para a `develop`** com `Closes #NN` na descrição. O CI precisa passar.
+6. **Release:** `release/X.Y.Z` sai da `develop`, atualiza o `CHANGELOG.md` e o `package.json`, entra
    na `main` por PR e recebe a **tag anotada** `vX.Y.Z` ([SemVer](https://semver.org/lang/pt-BR/)).
 
 ## Versionamento (SemVer)
