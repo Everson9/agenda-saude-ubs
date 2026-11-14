@@ -1,0 +1,36 @@
+# Atualização automática de dependências (DEP-BOT, #51).
+# Os PRs vão para a develop e passam pelo mesmo CI (lint, testes, cobertura, Gitleaks, npm audit).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: America/Recife
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+    labels:
+      - type:chore
+      - scope:devops
+    groups:
+      # as dependências de desenvolvimento (eslint e afins) chegam num PR só
+      desenvolvimento:
+        dependency-type: development
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: America/Recife
+    commit-message:
+      prefix: ci(deps)
+    labels:
+      - type:chore
+      - scope:devops

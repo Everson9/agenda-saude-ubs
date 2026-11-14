@@ -35,7 +35,7 @@ simples, com as regras de funcionamento da UBS validadas pelo sistema.
 
 | Camada | Tecnologia | Por quê |
 |---|---|---|
-| Runtime | Node.js 20+ (ES Modules) | Mesmo JavaScript no back e no front, com `node:test` embutido |
+| Runtime | Node.js 20.12+ (ES Modules) | Mesmo JavaScript no back e no front, com `node:test` embutido |
 | API | Express 5 | Roteamento simples e erros síncronos tratados nativamente |
 | Persistência | Arquivo JSON com escrita atômica | Zero instalação para o MVP. A camada `repositories/` permite trocar por PostgreSQL depois |
 | Front-end | HTML, CSS e JavaScript puros | Sem build, servido pelo próprio Express |
@@ -44,7 +44,7 @@ simples, com as regras de funcionamento da UBS validadas pelo sistema.
 
 ## 🚀 Como rodar localmente
 
-Pré-requisitos: [Node.js 20 ou superior](https://nodejs.org) e Git.
+Pré-requisitos: [Node.js 20.12 ou superior](https://nodejs.org) e Git.
 
 ```bash
 # 1. clonar
@@ -54,7 +54,10 @@ cd agenda-saude-ubs
 # 2. instalar as dependências
 npm install
 
-# 3. subir o servidor (http://localhost:3000)
+# 3. criar o .env a partir do exemplo (opcional para rodar local)
+cp .env.example .env
+
+# 4. subir o servidor (http://localhost:3000)
 npm start
 
 # modo desenvolvimento (reinicia ao salvar)
@@ -67,6 +70,10 @@ criado na primeira gravação.
 **Login local:** usuário `recepcao`, senha `recepcao123`. Essa senha só vale para rodar na sua máquina, e o
 servidor avisa no log quando está usando ela. Em qualquer ambiente publicado, defina as variáveis abaixo.
 
+As variáveis podem vir do ambiente (painel da hospedagem, `docker compose`) ou do arquivo `.env`, que o servidor
+lê sozinho quando existe (`process.loadEnvFile`, Node 20.12+). O que vem do ambiente vale mais que o arquivo.
+O modelo comentado está em [`.env.example`](.env.example); o `.env` de verdade nunca entra no Git.
+
 | Variável | Padrão | Uso |
 |---|---|---|
 | `PORT` | `3000` | Porta HTTP |
@@ -74,6 +81,19 @@ servidor avisa no log quando está usando ela. Em qualquer ambiente publicado, d
 | `AUTH_USUARIO` | `recepcao` | Usuário da recepção |
 | `AUTH_SENHA_HASH` | senha de desenvolvimento | Hash da senha, gerado com `npm run hash-senha -- "sua senha"` |
 | `AUTH_SEGREDO` | aleatório a cada início | Segredo que assina os tokens (sem ele, as sessões caem quando o servidor reinicia) |
+| `ENV_ARQUIVO` | `.env` | Caminho de outro arquivo de variáveis, se precisar |
+
+### Com Docker
+
+```bash
+docker compose up --build    # http://localhost:3000
+docker compose down          # para; os dados ficam no volume "dados"
+docker compose down -v       # para e apaga os dados
+```
+
+A imagem (`Dockerfile`) usa Node 22 alpine, instala só as dependências de produção, roda com o usuário sem
+privilégio `node` e guarda o banco no volume `/app/data`, então os dados sobrevivem a recriar o contêiner.
+O `docker-compose.yml` lê o `.env` se ele existir. O CI sobe o compose a cada PR e confere a rota `/api/saude`.
 
 ### Testes e lint
 
@@ -195,7 +215,7 @@ e as notas em [Releases](https://github.com/Everson9/agenda-saude-ubs/releases).
 - [x] **v0.2.0**: persistência, pacientes e especialidades
 - [x] **v0.3.0**: agendamento completo, tela da recepção, testes e CI
 - [x] **v0.4.0**: relatório de faltas (#18), login da recepção (#19), gate de cobertura (#42) e varredura de segurança (#43)
-- [ ] **v0.5.0** (Week_02): itens da avaliação técnica: concorrência (#48), LGPD (#49), rastreabilidade (#50), Dependabot (#51), `.env.example` (#52), índice de docs (#53), erro padronizado (#54), desempenho (#55), acessibilidade (#56), logs (#57) e Docker (#58)
+- [x] **v0.5.0** (Week_02): itens da avaliação técnica: concorrência (#48), LGPD (#49), rastreabilidade (#50), Dependabot (#51), `.env.example` (#52), índice de docs (#53), erro padronizado (#54), desempenho (#55), acessibilidade (#56), logs (#57) e Docker (#58)
 
 ## 📄 Licença
 

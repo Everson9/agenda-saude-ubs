@@ -26,8 +26,10 @@
    | `chore` | Configuração, dependências, versão |
    | `ci` | Pipeline do GitHub Actions |
 
-4. Abra o **Pull Request para a `develop`** com `Closes #NN` na descrição. O CI precisa passar.
-5. **Release:** `release/X.Y.Z` sai da `develop`, atualiza o `CHANGELOG.md` e o `package.json`, entra
+4. Se a mudança altera regra, rota ou dado pessoal, atualize `docs/` no mesmo PR (ver a
+   [regra de sincronização](docs/README.md#regra-de-sincronização-docs--código)).
+5. Abra o **Pull Request para a `develop`** com `Closes #NN` na descrição. O CI precisa passar.
+6. **Release:** `release/X.Y.Z` sai da `develop`, atualiza o `CHANGELOG.md` e o `package.json`, entra
    na `main` por PR e recebe a **tag anotada** `vX.Y.Z` ([SemVer](https://semver.org/lang/pt-BR/)).
 
 ## Versionamento (SemVer)
@@ -37,6 +39,12 @@
 - `PATCH`: correção compatível
 
 Enquanto o projeto estiver em `0.x`, cada marco da semana é uma versão `MINOR`.
+
+## Dependências (Dependabot)
+
+Toda segunda às 08:00 o Dependabot (`.github/dependabot.yml`) confere o `package.json` e as Actions do CI e abre
+PRs para a `develop` com o prefixo `chore(deps)` ou `ci(deps)`. Eles passam pelo mesmo CI. Atualização de
+correção e de versão menor entra se o CI passar; versão maior (MAJOR) pede leitura do changelog antes do merge.
 
 ## Antes de abrir o PR
 

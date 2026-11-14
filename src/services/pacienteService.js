@@ -1,5 +1,6 @@
 import { conflito, naoEncontrado, requisicaoInvalida } from '../utils/erros.js';
 import { dataValida, formatarLocal } from '../utils/datas.js';
+import { mascararCartaoSus } from '../utils/lgpd.js';
 
 export function criarPacienteService({ pacientes, agora }) {
   function validar(corpo) {
@@ -21,17 +22,22 @@ export function criarPacienteService({ pacientes, agora }) {
     // RF01
     cadastrar(corpo = {}) {
       const dados = validar(corpo);
-      if (pacientes.porCartaoSus(dados.cartao_sus)) throw conflito('já existe paciente com este cartão SUS');
+      if (pacientes.porCartaoSus(dados.cartao_sus)) throw conflito('já existe paciente com este cartão SUS', 'CARTAO_SUS_DUPLICADO');
       return pacientes.criar(dados);
     },
 
-    // RF02
+    // RF02: a busca usa o cartão completo, mas a listagem devolve o cartão mascarado (LGPD-001)
     listar(busca = '') {
       const termo = busca.trim().toLowerCase();
+      // busca por cartão aceita espaços e pontos ("898 0012"), mas só quando o termo é numérico
+      const termoDigitos = /^[\d\s.-]+$/.test(termo) ? termo.replace(/\D/g, '') : '';
       return pacientes
         .todos()
-        .filter((p) => !termo || p.nome.toLowerCase().includes(termo) || p.cartao_sus.includes(termo))
-        .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+        .filter((p) => !termo
+          || p.nome.toLowerCase().includes(termo)
+          || (termoDigitos && p.cartao_sus.includes(termoDigitos)))
+        .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+        .map((p) => ({ ...p, cartao_sus: mascararCartaoSus(p.cartao_sus) }));
     },
 
     obter(id) {

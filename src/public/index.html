@@ -7,67 +7,90 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
   <header>
     <h1>Agenda Saúde UBS</h1>
     <p>Recepção: cadastro de pacientes e agenda do dia</p>
     <button id="sair" class="secundario" type="button" hidden>Sair</button>
   </header>
 
-  <section id="tela-login" class="login" aria-labelledby="t-login" hidden>
-    <h2 id="t-login">Entrar</h2>
-    <form id="form-login">
-      <label>Usuário <input name="usuario" autocomplete="username" required></label>
-      <label>Senha <input name="senha" type="password" autocomplete="current-password" required></label>
-      <button type="submit">Entrar</button>
-    </form>
-    <p id="aviso-login" class="erro" role="alert"></p>
-  </section>
-
-  <main id="app" hidden>
-    <section aria-labelledby="t-paciente">
-      <h2 id="t-paciente">Novo paciente</h2>
-      <form id="form-paciente">
-        <label>Nome <input name="nome" required minlength="3"></label>
-        <label>Cartão SUS <input name="cartao_sus" required inputmode="numeric" placeholder="15 dígitos"></label>
-        <label>Telefone <input name="telefone" inputmode="tel"></label>
-        <label>Nascimento <input name="data_nascimento" type="date" required></label>
-        <button type="submit">Cadastrar</button>
+  <main id="conteudo" tabindex="-1">
+    <section id="tela-login" class="login" aria-labelledby="t-login" hidden>
+      <h2 id="t-login">Entrar</h2>
+      <form id="form-login">
+        <label>Usuário <input name="usuario" autocomplete="username" required></label>
+        <label>Senha <input name="senha" type="password" autocomplete="current-password" required></label>
+        <button type="submit">Entrar</button>
       </form>
+      <p id="aviso-login" class="erro" role="alert"></p>
     </section>
 
-    <section aria-labelledby="t-agendar">
-      <h2 id="t-agendar">Agendar consulta</h2>
-      <form id="form-agendar">
-        <label>Paciente <select name="paciente_id" required></select></label>
-        <label>Especialidade <select name="especialidade_id" required></select></label>
-        <label>Data e hora <input name="data_hora" type="datetime-local" step="300" required></label>
-        <button type="submit">Agendar</button>
-      </form>
-    </section>
+    <div id="app" class="app" hidden>
+      <section aria-labelledby="t-paciente">
+        <h2 id="t-paciente" tabindex="-1">Novo paciente</h2>
+        <form id="form-paciente">
+          <label>Nome <input name="nome" required minlength="3" autocomplete="off"></label>
+          <label>Cartão SUS
+            <input name="cartao_sus" required inputmode="numeric" autocomplete="off" aria-describedby="dica-cartao">
+            <span id="dica-cartao" class="dica">15 dígitos, com ou sem espaços</span>
+          </label>
+          <label>Telefone <input name="telefone" type="tel" autocomplete="off"></label>
+          <label>Nascimento <input name="data_nascimento" type="date" required></label>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </section>
 
-    <section aria-labelledby="t-agenda">
-      <h2 id="t-agenda">Agenda</h2>
-      <label>Dia <input id="filtro-dia" type="date"></label>
-      <table>
-        <thead><tr><th>Hora</th><th>Paciente</th><th>Especialidade</th><th>Status</th><th>Ações</th></tr></thead>
-        <tbody id="agenda"></tbody>
-      </table>
-    </section>
+      <section aria-labelledby="t-agendar">
+        <h2 id="t-agendar">Agendar consulta</h2>
+        <form id="form-agendar">
+          <label>Paciente <select name="paciente_id" required></select></label>
+          <label>Especialidade <select name="especialidade_id" required></select></label>
+          <label>Data e hora <input name="data_hora" type="datetime-local" step="300" required></label>
+          <button type="submit">Agendar</button>
+        </form>
+      </section>
 
-    <section aria-labelledby="t-relatorio">
-      <h2 id="t-relatorio">Relatório de faltas</h2>
-      <form id="form-relatorio">
-        <label>De <input name="inicio" type="date" required></label>
-        <label>Até <input name="fim" type="date" required></label>
-        <button type="submit">Gerar</button>
-      </form>
-      <table>
-        <thead><tr><th>Especialidade</th><th>Finalizadas</th><th>Faltas</th><th>Taxa de faltas</th></tr></thead>
-        <tbody id="relatorio"></tbody>
-      </table>
-    </section>
+      <section aria-labelledby="t-agenda">
+        <h2 id="t-agenda">Agenda</h2>
+        <label class="filtro">Dia <input id="filtro-dia" type="date"></label>
+        <div class="rolagem" role="region" aria-label="Tabela da agenda" tabindex="0">
+          <table>
+            <caption class="so-leitor">Consultas do dia escolhido, em ordem de horário</caption>
+            <thead>
+              <tr>
+                <th scope="col">Hora</th><th scope="col">Paciente</th><th scope="col">Especialidade</th>
+                <th scope="col">Status</th><th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="agenda"></tbody>
+          </table>
+        </div>
+      </section>
 
-    <p id="aviso" role="status" aria-live="polite"></p>
+      <section aria-labelledby="t-relatorio">
+        <h2 id="t-relatorio">Relatório de faltas</h2>
+        <form id="form-relatorio">
+          <label>De <input name="inicio" type="date" required></label>
+          <label>Até <input name="fim" type="date" required></label>
+          <button type="submit">Gerar</button>
+        </form>
+        <div class="rolagem" role="region" aria-label="Tabela do relatório de faltas" tabindex="0">
+          <table>
+            <caption class="so-leitor">Faltas por especialidade no período</caption>
+            <thead>
+              <tr>
+                <th scope="col">Especialidade</th><th scope="col">Finalizadas</th>
+                <th scope="col">Faltas</th><th scope="col">Taxa de faltas</th>
+              </tr>
+            </thead>
+            <tbody id="relatorio"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <p id="aviso" role="status" aria-live="polite"></p>
+    </div>
   </main>
 
   <script type="module" src="app.js"></script>

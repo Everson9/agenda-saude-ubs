@@ -122,6 +122,41 @@ stateDiagram-v2
     faltou --> [*]
 ```
 
+## Concorrência no agendamento (DATA-ATOMIC)
+
+Duas recepcionistas podem tentar marcar o mesmo horário ao mesmo tempo. A API garante que só uma
+consegue, e a outra recebe **409**:
+
+1. O Node.js executa JavaScript numa única thread. Uma requisição só cede a vez para outra num `await`
+   ou num callback.
+2. Em `agendamentoService.agendar`, a busca por conflito (`agendamentos.ativos()`) e a gravação
+   (`agendamentos.criar`) são **síncronas** e ficam no mesmo bloco, sem nenhum `await` entre elas.
+   O `jsonStore` também grava de forma síncrona (`writeFileSync` + `renameSync`).
+3. Por isso a segunda requisição só começa a verificar depois que a primeira já gravou, e encontra o
+   horário ocupado.
+
+**Prova:** `tests/integration/concorrencia.api.test.js` dispara 20 requisições em paralelo para o mesmo
+horário e confere que sai exatamente um 201 e dezenove 409.
+
+**Limite conhecido:** a garantia vale para **um processo**. Com mais de uma instância da API sobre o
+mesmo arquivo, seria preciso trocar o JSON por um banco com restrição única
+(`UNIQUE (especialidade_id, data_hora)` para agendamentos ativos) ou trava de arquivo.
+
+## Logs (OBS-LOG)
+
+O servidor escreve **uma linha JSON por evento** na saída padrão, pronta para qualquer coletor de logs:
+
+```json
+{"ts":"2026-11-14T12:00:00.000Z","nivel":"aviso","msg":"requisicao","requisicao_id":"4f1c...","metodo":"POST","rota":"/api/agendamentos","status":409,"duracao_ms":3.1}
+```
+
+- Cada requisição recebe um `requisicao_id` (ou reaproveita o `X-Request-Id` do proxy), devolvido no
+  cabeçalho `X-Request-Id`. Um erro 500 gera uma linha `erro_interno` com o mesmo id, o tipo, a mensagem e a pilha.
+- Nível: `info` (2xx/3xx), `aviso` (4xx), `erro` (5xx).
+- **Sem dado pessoal:** a rota é gravada sem a query string (a busca pode ter nome ou cartão SUS) e o corpo
+  da requisição nunca vai para o log. Um teste confere isso.
+- Nos testes o app usa um logger silencioso; só o `server.js` liga o logger real.
+
 ## API
 
 | Método | Rota | Requisito | Respostas |
@@ -139,4 +174,34 @@ stateDiagram-v2
 | GET | `/api/relatorios/faltas?inicio=&fim=` | RF08 | 200, 400 |
 
 Todas as outras rotas exigem `Authorization: Bearer <token>` e devolvem **401** sem ele, com token adulterado
-ou vencido (8 horas). Erros sempre no formato `{ "erro": "mensagem em português" }`.
+ou vencido (8 horas).
+
+### Formato de erro (API-ERR)
+
+Todo erro sai no mesmo esquema. `erro` é para a pessoa ler; `codigo` é estável e serve para o cliente decidir
+o que fazer sem depender do texto:
+
+```json
+{ "erro": "horário já ocupado para esta especialidade", "codigo": "HORARIO_OCUPADO", "status": 409 }
+```
+
+| Código | Status | Quando |
+|---|---|---|
+| `REQUISICAO_INVALIDA` | 400 | Campo faltando ou fora do formato |
+| `JSON_INVALIDO` | 400 | Corpo da requisição não é JSON válido |
+| `HORARIO_NO_PASSADO` | 400 | RN05 |
+| `FORA_DO_FUNCIONAMENTO` | 400 | RN01: fim de semana ou fora das 07:00 às 17:00 |
+| `FORA_DA_GRADE` | 400 | RN02 |
+| `NAO_AUTORIZADO` | 401 | Sem token, token adulterado |
+| `CREDENCIAIS_INVALIDAS` | 401 | Login com usuário ou senha errados |
+| `SESSAO_EXPIRADA` | 401 | Token com mais de 8 horas |
+| `NAO_ENCONTRADO` | 404 | Paciente, especialidade ou agendamento inexistente |
+| `ROTA_NAO_ENCONTRADA` | 404 | Rota da API que não existe |
+| `CONFLITO` | 409 | Conflito genérico |
+| `CARTAO_SUS_DUPLICADO` | 409 | RF01: cartão SUS já cadastrado |
+| `HORARIO_OCUPADO` | 409 | RN03 |
+| `PACIENTE_JA_AGENDADO_NO_DIA` | 409 | RN04 |
+| `AGENDAMENTO_FINALIZADO` | 409 | RN06: agendamento já cancelado, realizado ou com falta |
+| `ERRO_INTERNO` | 500 | Falha inesperada (detalhe só no log) |
+
+Código novo entra nesta tabela no mesmo PR. Código existente não muda de nome (quebraria o cliente).
