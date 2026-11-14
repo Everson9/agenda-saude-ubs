@@ -122,6 +122,26 @@ stateDiagram-v2
     faltou --> [*]
 ```
 
+## Concorrência no agendamento (DATA-ATOMIC)
+
+Duas recepcionistas podem tentar marcar o mesmo horário ao mesmo tempo. A API garante que só uma
+consegue, e a outra recebe **409**:
+
+1. O Node.js executa JavaScript numa única thread. Uma requisição só cede a vez para outra num `await`
+   ou num callback.
+2. Em `agendamentoService.agendar`, a busca por conflito (`agendamentos.ativos()`) e a gravação
+   (`agendamentos.criar`) são **síncronas** e ficam no mesmo bloco, sem nenhum `await` entre elas.
+   O `jsonStore` também grava de forma síncrona (`writeFileSync` + `renameSync`).
+3. Por isso a segunda requisição só começa a verificar depois que a primeira já gravou, e encontra o
+   horário ocupado.
+
+**Prova:** `tests/integration/concorrencia.api.test.js` dispara 20 requisições em paralelo para o mesmo
+horário e confere que sai exatamente um 201 e dezenove 409.
+
+**Limite conhecido:** a garantia vale para **um processo**. Com mais de uma instância da API sobre o
+mesmo arquivo, seria preciso trocar o JSON por um banco com restrição única
+(`UNIQUE (especialidade_id, data_hora)` para agendamentos ativos) ou trava de arquivo.
+
 ## API
 
 | Método | Rota | Requisito | Respostas |
