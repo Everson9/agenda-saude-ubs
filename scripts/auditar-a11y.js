@@ -56,11 +56,11 @@ async function percorrerComTab(pagina) {
       const repetido = el.dataset.a11yPasso !== undefined;
       if (!repetido) el.dataset.a11yPasso = String(n);
       const s = getComputedStyle(el);
-      const rotulo = el.getAttribute('aria-label') || el.labels?.[0]?.textContent?.trim() || el.textContent.trim();
+      const rotulo = el.getAttribute('aria-label') || el.labels?.[0]?.textContent?.trim() || el.textContent;
       return {
         repetido,
         primeiro: el.dataset.a11yPasso === '0',
-        controle: `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''} "${rotulo.slice(0, 45)}"`,
+        controle: `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''} "${rotulo.replace(/\s+/g, ' ').trim().slice(0, 45)}"`,
         focoVisivel: (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) >= 2) || s.boxShadow !== 'none',
       };
     }, passos.length);
