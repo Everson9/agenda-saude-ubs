@@ -52,6 +52,17 @@ jobs:
       - run: npm ci
       - run: npm run a11y
 
+  docker:
+    # a imagem builda, o compose sobe e a API responde; o healthcheck da imagem precisa ficar "healthy"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose up --build --detach --wait --wait-timeout 90
+      - run: curl --fail --silent http://localhost:3000/api/saude
+      - run: test "$(docker compose exec -T api whoami)" = "node"
+      - if: always()
+        run: docker compose logs && docker compose down --volumes
+
   seguranca:
     runs-on: ubuntu-latest
     steps:

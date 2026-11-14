@@ -1,0 +1,21 @@
+# Uso: docker compose up --build   ->  http://localhost:3000
+# Login e sessões fixas: crie o .env a partir do .env.example (opcional; sem ele vale a senha de desenvolvimento).
+services:
+  api:
+    build: .
+    image: agenda-saude-ubs:local
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # dentro do contêiner a porta e o arquivo do banco são fixos; o volume guarda os dados
+      PORT: 3000
+      DB_ARQUIVO: /app/data/db.json
+    volumes:
+      - dados:/app/data
+    restart: unless-stopped
+
+volumes:
+  dados:

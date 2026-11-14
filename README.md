@@ -83,6 +83,18 @@ O modelo comentado está em [`.env.example`](.env.example); o `.env` de verdade 
 | `AUTH_SEGREDO` | aleatório a cada início | Segredo que assina os tokens (sem ele, as sessões caem quando o servidor reinicia) |
 | `ENV_ARQUIVO` | `.env` | Caminho de outro arquivo de variáveis, se precisar |
 
+### Com Docker
+
+```bash
+docker compose up --build    # http://localhost:3000
+docker compose down          # para; os dados ficam no volume "dados"
+docker compose down -v       # para e apaga os dados
+```
+
+A imagem (`Dockerfile`) usa Node 22 alpine, instala só as dependências de produção, roda com o usuário sem
+privilégio `node` e guarda o banco no volume `/app/data`, então os dados sobrevivem a recriar o contêiner.
+O `docker-compose.yml` lê o `.env` se ele existir. O CI sobe o compose a cada PR e confere a rota `/api/saude`.
+
 ### Testes e lint
 
 ```bash
