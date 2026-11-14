@@ -28,6 +28,18 @@ jobs:
         if: matrix.node == 22
         run: npm run test:coverage
 
+  desempenho:
+    # RNF01: o script sai com erro se algum fluxo passar de 300 ms no p95 com 5.000 agendamentos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run perf
+
   seguranca:
     runs-on: ubuntu-latest
     steps:
