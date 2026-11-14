@@ -1,3 +1,7 @@
+import { carregarEnv } from './carregarEnv.js';
+
+carregarEnv();
+
 export const config = {
   porta: Number(process.env.PORT) || 3000,
   arquivoBanco: process.env.DB_ARQUIVO || 'data/db.json',
