@@ -29,6 +29,17 @@ test('RF02: GET /api/pacientes busca por parte do nome', async () => {
   assert.equal((await api.get('/api/pacientes/99')).status, 404);
 });
 
+test('LGPD-001: a listagem devolve o cartão SUS mascarado e a busca pelo cartão continua funcionando', async () => {
+  const lista = (await api.get('/api/pacientes')).corpo;
+  assert.ok(lista.length > 0);
+  assert.ok(lista.every((p) => /^\d{3} \*{4} \*{4} \d{4}$/.test(p.cartao_sus)));
+  assert.ok(!JSON.stringify(lista).includes('898001234567890'));
+
+  const porCartao = (await api.get(`/api/pacientes?busca=${encodeURIComponent('898 0012 3456')}`)).corpo;
+  assert.deepEqual(porCartao.map((p) => p.nome), ['Maria da Silva']);
+  assert.equal(porCartao[0].cartao_sus, '898 **** **** 7890');
+});
+
 test('RF03: GET /api/especialidades lista as 4 especialidades', async () => {
   const { corpo } = await api.get('/api/especialidades');
   assert.equal(corpo.length, 4);
