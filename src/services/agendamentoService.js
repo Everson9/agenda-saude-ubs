@@ -35,6 +35,8 @@ export function criarAgendamentoService({ agendamentos, pacientes, especialidade
 
   return {
     // RF04
+    // DATA-ATOMIC (#48): da verificação de conflito até agendamentos.criar não pode haver `await`.
+    // O Node roda este trecho inteiro sem ceder a vez, então duas requisições não se intercalam.
     agendar({ paciente_id: pacienteId, especialidade_id: especialidadeId, data_hora: dataHora } = {}) {
       const paciente = pacientes.porId(pacienteId);
       if (!paciente) throw naoEncontrado('paciente não encontrado');
