@@ -32,7 +32,7 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 
 | Código | Categoria | Requisito | Como é verificado |
 |---|---|---|---|
-| [RNF01] | Desempenho | As operações da API devem responder em menos de 300 ms com até 5.000 agendamentos. | Operações em memória com escrita única por alteração |
+| [RNF01] | Desempenho | As operações da API devem responder em menos de 300 ms com até 5.000 agendamentos. | `npm run perf` no CI: p95 abaixo de 300 ms em todos os fluxos ([desempenho.md](desempenho.md), #55) |
 | [RNF02] | Persistência / Confiabilidade | Os dados devem sobreviver a reinicializações, e uma queda no meio da escrita não pode corromper o arquivo. | `jsonStore` grava em `.tmp` e renomeia |
 | [RNF03] | Portabilidade | Deve rodar em Windows, Linux e macOS com Node.js 20.12 ou superior, sem banco externo. | CI no Ubuntu e desenvolvimento no Windows |
 | [RNF04] | Usabilidade | A tela da recepção deve funcionar no celular e no computador, com mensagens de erro em português. | Layout responsivo e erros da API em português |
