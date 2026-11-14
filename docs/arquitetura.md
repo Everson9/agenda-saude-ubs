@@ -142,6 +142,21 @@ horário e confere que sai exatamente um 201 e dezenove 409.
 mesmo arquivo, seria preciso trocar o JSON por um banco com restrição única
 (`UNIQUE (especialidade_id, data_hora)` para agendamentos ativos) ou trava de arquivo.
 
+## Logs (OBS-LOG)
+
+O servidor escreve **uma linha JSON por evento** na saída padrão, pronta para qualquer coletor de logs:
+
+```json
+{"ts":"2026-11-14T12:00:00.000Z","nivel":"aviso","msg":"requisicao","requisicao_id":"4f1c...","metodo":"POST","rota":"/api/agendamentos","status":409,"duracao_ms":3.1}
+```
+
+- Cada requisição recebe um `requisicao_id` (ou reaproveita o `X-Request-Id` do proxy), devolvido no
+  cabeçalho `X-Request-Id`. Um erro 500 gera uma linha `erro_interno` com o mesmo id, o tipo, a mensagem e a pilha.
+- Nível: `info` (2xx/3xx), `aviso` (4xx), `erro` (5xx).
+- **Sem dado pessoal:** a rota é gravada sem a query string (a busca pode ter nome ou cartão SUS) e o corpo
+  da requisição nunca vai para o log. Um teste confere isso.
+- Nos testes o app usa um logger silencioso; só o `server.js` liga o logger real.
+
 ## API
 
 | Método | Rota | Requisito | Respostas |
