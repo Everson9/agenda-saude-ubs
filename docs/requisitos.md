@@ -42,13 +42,20 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 
 ## Matriz de rastreabilidade
 
-| Requisito | User story | Caso de uso | Issue | Código | Teste |
+Cada linha liga o requisito à user story, ao caso de uso, à issue, ao código e ao **teste exato que o prova**,
+pelo nome que aparece na saída do `npm test`. O teste `tests/unit/rastreabilidade.test.js` lê esta tabela e
+falha se algum nome citado aqui não existir mais nos testes, então a matriz não fica desatualizada em silêncio.
+
+| Requisito | User story | Caso de uso | Issue | Código | Teste (arquivo › nome) |
 |---|---|---|---|---|---|
-| RF01 | US01 | UC01 | #7 | `services/pacienteService.js` `cadastrar` | `integration/pacientes.api.test.js` |
-| RF02 | US02 | UC01 | #8 | `pacienteService.listar` | `integration/pacientes.api.test.js` |
-| RF03 | US03 | UC02 | #9 | `routes/especialidadeRoutes.js` | `integration/pacientes.api.test.js` |
-| RF04 | US03 | UC02 | #10, #16 | `services/agendamentoService.js` `agendar` | `unit/agendamentoService.test.js` |
-| RF05 | US04 | UC03 | #11 | `agendamentoService.listar` | `integration/agendamentos.api.test.js` |
-| RF06 | US05 | UC04 | #12 | `agendamentoService.cancelar` | `unit/agendamentoService.test.js` |
-| RF07 | US06 | UC05 | #13 | `agendamentoService.registrarComparecimento` | `unit/agendamentoService.test.js` |
-| RF08 | US07 | — | #18 | `services/relatorioService.js` | `unit/relatorioService.test.js` |
+| RF01 | US01 | UC01 | #7 | `services/pacienteService.js` `cadastrar` | `integration/pacientes.api.test.js` › «RF01: POST /api/pacientes cadastra e normaliza o cartão SUS» · «RF01: recusa cartão SUS duplicado, nome curto e cartão com tamanho errado» |
+| RF02 | US02 | UC01 | #8, #49 | `pacienteService.listar` | `integration/pacientes.api.test.js` › «RF02: GET /api/pacientes busca por parte do nome» · «LGPD-001: a listagem devolve o cartão SUS mascarado e a busca pelo cartão continua funcionando» |
+| RF03 | US03 | UC02 | #9 | `routes/especialidadeRoutes.js` | `integration/pacientes.api.test.js` › «RF03: GET /api/especialidades lista as 4 especialidades» |
+| RF04 | US03 | UC02 | #10, #16, #48 | `services/agendamentoService.js` `agendar` | `unit/agendamentoService.test.js` › «RF04: agenda dentro da grade» · «RF04: horário ocupado e paciente repetido no dia geram conflito» · «RF04: recusa passado, fim de semana, fora do horário e fora da grade»; `integration/agendamentos.api.test.js` › «RF04: POST /api/agendamentos agenda e devolve 201» · «RF04: conflito de horário devolve 409 e data inexistente devolve 400 (#16)»; `integration/concorrencia.api.test.js` › «DATA-ATOMIC: 20 requisições simultâneas no mesmo horário geram um 201 e dezenove 409» |
+| RF05 | US04 | UC03 | #11 | `agendamentoService.listar` | `integration/agendamentos.api.test.js` › «RF05: agenda do dia sai em ordem de horário, com nomes» |
+| RF06 | US05 | UC04 | #12 | `agendamentoService.cancelar` | `unit/agendamentoService.test.js` › «RF06: cancelamento exige motivo e libera o horário»; `integration/agendamentos.api.test.js` › «RF06: PATCH /cancelar exige motivo» |
+| RF07 | US06 | UC05 | #13 | `agendamentoService.registrarComparecimento` | `unit/agendamentoService.test.js` › «RF07: comparecimento só depois do horário e uma única vez»; `integration/agendamentos.api.test.js` › «RF07: PATCH /comparecimento depois do horário» |
+| RF08 | US07 | — | #18 | `services/relatorioService.js` | `unit/relatorioService.test.js` › «RF08: 3 faltas em 10 consultas de Odontologia dão 30% (US07)» · «RF08: só conta realizado e faltou, e só dentro do período» · «RF08: período inválido gera 400»; `integration/agendamentos.api.test.js` › «RF08: GET /api/relatorios/faltas soma o comparecimento registrado» |
+| RNF02 | — | — | #6, #48 | `database/jsonStore.js` | `unit/jsonStore.test.js` › «RNF02: os dados sobrevivem a uma nova abertura do arquivo»; `integration/concorrencia.api.test.js` › «DATA-ATOMIC: horários diferentes em paralelo são todos aceitos e os ids não se repetem» |
+| RNF04 | — | — | #54 | `utils/erros.js`, `middlewares/tratarErros.js` | `integration/erros.api.test.js` › «API-ERR: 400 de validação, 404 de recurso e 404 de rota usam o mesmo esquema» · «API-ERR: conflitos de negócio têm código próprio e estável» |
+| RNF05 | — | — | #19, #49, #52, #57 | `services/authService.js`, `utils/lgpd.js`, `middlewares/registrarRequisicao.js` | `integration/auth.api.test.js` › «RNF05: login correto devolve token com validade de 8 horas» · «RNF05: sem token a API devolve 401, menos /api/saude» · «RNF05: token adulterado devolve 401» · «RNF05: token vence depois de 8 horas»; `unit/senha.test.js` › «gerarHash nunca guarda a senha e usa sal diferente a cada vez»; `unit/lgpd.test.js` › «LGPD-001: valor fora do formato não vaza nenhum dígito»; `integration/logs.api.test.js` › «OBS-LOG: nenhum dado de paciente vai para o log»; `unit/carregarEnv.test.js` › «ENV-EX: o .env.example lista toda variável que o código lê, sem segredo preenchido» |
