@@ -70,7 +70,7 @@ jobs:
         with:
           fetch-depth: 0 # o Gitleaks varre o histórico inteiro, não só o último commit
       - name: Gitleaks (segredos vazados)
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
