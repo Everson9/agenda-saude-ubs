@@ -34,7 +34,7 @@ Cada requisito tem um código único usado nas issues, nos commits e nos testes
 |---|---|---|---|
 | [RNF01] | Desempenho | As operações da API devem responder em menos de 300 ms com até 5.000 agendamentos. | Operações em memória com escrita única por alteração |
 | [RNF02] | Persistência / Confiabilidade | Os dados devem sobreviver a reinicializações, e uma queda no meio da escrita não pode corromper o arquivo. | `jsonStore` grava em `.tmp` e renomeia |
-| [RNF03] | Portabilidade | Deve rodar em Windows, Linux e macOS com Node.js 20 ou superior, sem banco externo. | CI no Ubuntu e desenvolvimento no Windows |
+| [RNF03] | Portabilidade | Deve rodar em Windows, Linux e macOS com Node.js 20.12 ou superior, sem banco externo. | CI no Ubuntu e desenvolvimento no Windows |
 | [RNF04] | Usabilidade | A tela da recepção deve funcionar no celular e no computador, com mensagens de erro em português. | Layout responsivo e erros da API em português |
 | [RNF05] | Segurança / LGPD | Dados reais de pacientes não podem ir para o repositório, e a API deve validar toda entrada. | `data/` no `.gitignore`, validação nos services e login com senha em hash scrypt e token de 8 h (v0.4.0, #19) |
 | [RNF06] | Manutenibilidade | O código deve ser separado em camadas (rotas, services, repositories) e passar no ESLint. | `npm run lint` no CI |
