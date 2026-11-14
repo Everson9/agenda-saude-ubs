@@ -38,6 +38,12 @@
 
 Enquanto o projeto estiver em `0.x`, cada marco da semana é uma versão `MINOR`.
 
+## Dependências (Dependabot)
+
+Toda segunda às 08:00 o Dependabot (`.github/dependabot.yml`) confere o `package.json` e as Actions do CI e abre
+PRs para a `develop` com o prefixo `chore(deps)` ou `ci(deps)`. Eles passam pelo mesmo CI. Atualização de
+correção e de versão menor entra se o CI passar; versão maior (MAJOR) pede leitura do changelog antes do merge.
+
 ## Antes de abrir o PR
 
 ```bash
