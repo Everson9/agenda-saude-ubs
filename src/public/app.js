@@ -15,6 +15,7 @@ function mostrarLogin(mensagem = '') {
   $('#sair').hidden = true;
   $('#tela-login').hidden = false;
   $('#aviso-login').textContent = mensagem;
+  $('[name=usuario]').focus();
 }
 
 async function api(metodo, caminho, corpo) {
@@ -49,6 +50,16 @@ async function carregarListas() {
 async function carregarAgenda() {
   const dia = $('#filtro-dia').value;
   const lista = await api('GET', `/api/agendamentos?data=${dia}`);
+  if (!lista.length) {
+    const td = document.createElement('td');
+    td.colSpan = 5;
+    td.className = 'vazio';
+    td.textContent = 'Nenhuma consulta neste dia.';
+    const tr = document.createElement('tr');
+    tr.append(td);
+    $('#agenda').replaceChildren(tr);
+    return;
+  }
   $('#agenda').replaceChildren(...lista.map((a) => {
     const tr = document.createElement('tr');
     for (const texto of [a.data_hora.slice(11), a.paciente, a.especialidade, a.status]) {
@@ -63,7 +74,10 @@ async function carregarAgenda() {
       for (const [rotulo, acao] of [['Compareceu', 'realizado'], ['Faltou', 'faltou'], ['Cancelar', 'cancelar']]) {
         const b = document.createElement('button');
         b.className = 'secundario';
+        b.type = 'button';
         b.textContent = rotulo;
+        // o leitor de tela anuncia de quem é o botão, já que cada linha repete os mesmos três
+        b.setAttribute('aria-label', `${rotulo}: ${a.paciente}, ${a.data_hora.slice(11)}`);
         b.onclick = () => agir(a.id, acao);
         div.append(b);
       }
@@ -147,6 +161,7 @@ async function iniciar() {
   $('#tela-login').hidden = true;
   $('#app').hidden = false;
   $('#sair').hidden = false;
+  $('#t-paciente').focus(); // o formulário de login sumiu: o foco vai para o começo da tela
   try {
     await carregarListas();
     await carregarAgenda();
