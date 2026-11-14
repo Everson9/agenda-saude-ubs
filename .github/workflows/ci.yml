@@ -40,6 +40,18 @@ jobs:
       - run: npm ci
       - run: npm run perf
 
+  acessibilidade:
+    # axe-core (WCAG 2.1 A/AA) + percurso por teclado no Chrome que já vem no runner do Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run a11y
+
   seguranca:
     runs-on: ubuntu-latest
     steps:
