@@ -17,7 +17,7 @@ export function criarAuthService({ usuario, senhaHash, segredo, agora }) {
     login({ usuario: u, senha } = {}) {
       // confere a senha mesmo com usuário errado, para o tempo de resposta não revelar qual dos dois errou
       const senhaOk = conferirSenha(senha ?? '', senhaHash);
-      if (u !== usuario || !senhaOk) throw naoAutorizado('usuário ou senha inválidos');
+      if (u !== usuario || !senhaOk) throw naoAutorizado('usuário ou senha inválidos', 'CREDENCIAIS_INVALIDAS');
       const expiraEm = agora().getTime() + VALIDADE_MS;
       const dados = b64(JSON.stringify({ sub: usuario, exp: expiraEm }));
       return { token: `${dados}.${assinar(dados)}`, expira_em: new Date(expiraEm).toISOString() };
@@ -32,7 +32,7 @@ export function criarAuthService({ usuario, senhaHash, segredo, agora }) {
         throw naoAutorizado('sessão inválida, faça login de novo');
       }
       const { sub, exp } = JSON.parse(Buffer.from(dados, 'base64url').toString());
-      if (exp <= agora().getTime()) throw naoAutorizado('sessão expirada, faça login de novo');
+      if (exp <= agora().getTime()) throw naoAutorizado('sessão expirada, faça login de novo', 'SESSAO_EXPIRADA');
       return { usuario: sub };
     },
   };

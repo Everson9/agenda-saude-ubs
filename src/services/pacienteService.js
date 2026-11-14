@@ -22,7 +22,7 @@ export function criarPacienteService({ pacientes, agora }) {
     // RF01
     cadastrar(corpo = {}) {
       const dados = validar(corpo);
-      if (pacientes.porCartaoSus(dados.cartao_sus)) throw conflito('já existe paciente com este cartão SUS');
+      if (pacientes.porCartaoSus(dados.cartao_sus)) throw conflito('já existe paciente com este cartão SUS', 'CARTAO_SUS_DUPLICADO');
       return pacientes.criar(dados);
     },
 
