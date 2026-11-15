@@ -1,5 +1,7 @@
 # Uso: docker compose up --build   ->  http://localhost:3000
 # Login e sessões fixas: crie o .env a partir do .env.example (opcional; sem ele vale a senha de desenvolvimento).
+# A imagem roda com NODE_ENV=production, que exige AUTH_SENHA_HASH e AUTH_SEGREDO (#76). Para uso local o
+# compose troca para development, a não ser que o .env diga NODE_ENV=production.
 services:
   api:
     build: .
@@ -12,6 +14,7 @@ services:
     environment:
       # dentro do contêiner a porta e o arquivo do banco são fixos; o volume guarda os dados
       PORT: 3000
+      NODE_ENV: ${NODE_ENV:-development}
       DB_ARQUIVO: /app/data/db.json
     volumes:
       - dados:/app/data
