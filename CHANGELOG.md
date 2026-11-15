@@ -3,6 +3,16 @@
 Todas as mudanças relevantes deste projeto. Formato baseado em
 [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.6.0] - 2026-11-14
+
+Publicação: o deploy público passou a ser exigido na aula de 07/11.
+
+### Adicionado
+- Publicação no Render: https://agenda-saude-ubs.onrender.com. `render.yaml` (Blueprint) com deploy automático a partir da `main` e health check em `/api/saude`; `docs/deploy.md` com variáveis, limites do plano gratuito e conferência feita (DEPLOY-01) (#77).
+
+### Segurança
+- Com `NODE_ENV=production`, o servidor recusa iniciar sem `AUTH_SENHA_HASH` e `AUTH_SEGREDO`, em vez de aceitar a senha de desenvolvimento publicada no README. O CI confere que a imagem Docker pura sai com código 1; o `docker-compose.yml` roda em `development` para uso local (SEC-DEFAULT) (#76).
+
 ## [0.5.0] - 2026-11-14
 
 Itens da avaliação técnica Week_01.
