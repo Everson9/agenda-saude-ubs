@@ -28,6 +28,21 @@ A `develop` não é publicada: ela é a branch de integração.
 | `AUTH_USUARIO` | `recepcao` |
 | `AUTH_SENHA_HASH` | Hash scrypt da senha de produção, gerado com `npm run hash-senha -- "senha"`. Fica só no painel do Render |
 | `AUTH_SEGREDO` | 32 bytes aleatórios em hex. Fica só no painel do Render |
+| `ACESSO_AVALIACAO` | `true`. Mostra "Entrar como avaliador" na tela de login (#81) |
+
+## Acesso de avaliação
+
+Quem avalia o projeto acompanha pelo GitHub e não recebe a senha da recepção. Publicar essa senha no README
+deixaria a conta real aberta, e foi justamente o risco apontado na avaliação Week_01. A saída foi um acesso
+separado, **ligado só por variável de ambiente**:
+
+- `GET /api/auth/opcoes` diz à tela se o acesso está ligado; a tela só mostra o botão nesse caso.
+- `POST /api/auth/avaliacao` emite um token de 8 h para o usuário `avaliador`. Desligado, a rota responde 404.
+- A senha da recepção continua secreta e continua valendo.
+
+O risco aceito: com o acesso ligado, qualquer pessoa com o link entra e vê o que foi cadastrado. Isso só é
+aceitável porque o ambiente publicado é de demonstração, com disco efêmero e o aviso na tela para não usar dados
+reais. Num ambiente com dados reais de pacientes a variável fica desligada.
 
 A senha de desenvolvimento do README (`recepcao123`) **não funciona** no ambiente publicado (conferido: o login
 com ela devolve 401). Nenhum segredo de produção está no repositório; o Gitleaks do CI vigia isso.
@@ -44,7 +59,7 @@ com ela devolve 401). Nenhum segredo de produção está no repositório; o Gitl
 ## Como refazer do zero
 
 1. No Render, **New → Blueprint** e escolher este repositório. O `render.yaml` cria o serviço.
-2. Preencher `AUTH_SENHA_HASH` no painel (o `AUTH_SEGREDO` o Render gera sozinho).
+2. Preencher `AUTH_SENHA_HASH` no painel e, se for ambiente de demonstração, `ACESSO_AVALIACAO=true` (o `AUTH_SEGREDO` o Render gera sozinho).
 3. Esperar o deploy ficar `live` e conferir `curl https://<serviço>.onrender.com/api/saude`.
 
 ## Conferência feita na publicação (14/11/2026)

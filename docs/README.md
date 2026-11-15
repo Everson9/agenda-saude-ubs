@@ -6,13 +6,13 @@ Ordem sugerida para quem chega agora: termo de abertura, requisitos, user storie
 | Documento | O que tem | Versão | Atualizado em |
 |---|---|---|---|
 | [project-charter.md](project-charter.md) | Termo de abertura: problema, objetivo, escopo, fora do escopo, partes interessadas e riscos | 0.1.0 | 07/11/2026 |
-| [requisitos.md](requisitos.md) | RF01 a RF08, regras de negócio, RNF01 a RNF07 e a matriz de rastreabilidade até o teste exato | 0.5.0 | 14/11/2026 |
+| [requisitos.md](requisitos.md) | RF01 a RF08, regras de negócio, RNF01 a RNF07 e a matriz de rastreabilidade até o teste exato | 0.7.0 | 14/11/2026 |
 | [user-stories.md](user-stories.md) | US01 a US07 com critérios de aceite em Gherkin | 0.4.0 | 07/11/2026 |
 | [casos-de-uso.md](casos-de-uso.md) | UC01 a UC05 com fluxo principal e alternativos | 0.1.0 | 07/11/2026 |
-| [arquitetura.md](arquitetura.md) | C4, camadas, classes, DER, ciclo de vida, concorrência, logs, API e códigos de erro | 0.5.0 | 14/11/2026 |
+| [arquitetura.md](arquitetura.md) | C4, camadas, classes, DER, ciclo de vida, concorrência, logs, API e códigos de erro | 0.7.0 | 14/11/2026 |
 | [lgpd.md](lgpd.md) | Mapa de dados pessoais, finalidade, base legal e medidas aplicadas | 0.5.0 | 14/11/2026 |
 | [desempenho.md](desempenho.md) | Baseline do RNF01 com 5.000 e 20.000 agendamentos | 0.5.0 | 14/11/2026 |
-| [deploy.md](deploy.md) | Publicação no Render: serviço, variáveis, health check, limites do plano free e como refazer | 0.6.0 | 14/11/2026 |
+| [deploy.md](deploy.md) | Publicação no Render: serviço, variáveis, acesso de avaliação, limites do plano free e como refazer | 0.7.0 | 14/11/2026 |
 | [acessibilidade.md](acessibilidade.md) | Auditoria axe-core e teclado, antes e depois, e checklist WCAG | 0.5.0 | 14/11/2026 |
 
 Fora desta pasta: [README](../README.md) (como rodar), [CONTRIBUTING](../CONTRIBUTING.md) (fluxo de Git) e

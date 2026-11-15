@@ -41,6 +41,7 @@ export function criarApp({
     usuario: auth.usuario || 'recepcao',
     senhaHash: auth.senhaHash || gerarHash(SENHA_DESENVOLVIMENTO),
     segredo: auth.segredo || randomBytes(32).toString('hex'),
+    avaliacao: auth.avaliacao === true,
     agora,
   });
 

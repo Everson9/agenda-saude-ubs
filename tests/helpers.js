@@ -20,8 +20,8 @@ export function criarRelogio(inicio = new Date(2026, 10, 9, 8, 0)) {
 export const LOGIN = { usuario: 'recepcao', senha: 'recepcao123' };
 
 /** Sobe a API numa porta livre, com banco em memória, e já faz login da recepção. */
-export async function subirApi(relogio = criarRelogio()) {
-  const app = criarApp({ store: criarStore(), agora: relogio.agora });
+export async function subirApi(relogio = criarRelogio(), auth = {}) {
+  const app = criarApp({ store: criarStore(), agora: relogio.agora, auth });
   const servidor = await new Promise((ok) => {
     const s = app.listen(0, () => ok(s));
   });
