@@ -23,6 +23,8 @@ export const auth = {
   usuario: process.env.AUTH_USUARIO || 'recepcao',
   senhaHash: process.env.AUTH_SENHA_HASH || null,
   segredo: process.env.AUTH_SEGREDO || null,
+  /** Acesso de avaliação sem senha (#81): só com ACESSO_AVALIACAO=true, pensado para o ambiente publicado. */
+  avaliacao: process.env.ACESSO_AVALIACAO === 'true',
 };
 
 /**

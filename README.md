@@ -9,10 +9,16 @@
 Sistema web para a **recepção de uma Unidade Básica de Saúde (UBS)** marcar consultas numa agenda
 única por especialidade, **sem horário duplicado**, e registrar se o paciente compareceu.
 
-**🌐 Publicado em: https://agenda-saude-ubs.onrender.com** (plano gratuito do Render: depois de 15 minutos sem
-uso o serviço dorme e o primeiro acesso leva cerca de 1 minuto; os dados são de demonstração e se apagam a cada
-reinício). A senha publicada abaixo **não funciona** lá: o login de produção é entregue à parte. Detalhes em
-[docs/deploy.md](docs/deploy.md).
+**🌐 Publicado em: https://agenda-saude-ubs.onrender.com**
+
+**Para avaliar:** abra o link e clique em **"Entrar como avaliador"**, sem senha. O sistema abre vazio: cadastre
+um paciente, agende uma consulta num dia útil entre 07:00 e 17:00 e registre o comparecimento.
+
+- O plano gratuito do Render dorme depois de 15 minutos sem uso: o primeiro acesso leva cerca de 1 minuto.
+- Os dados cadastrados lá se apagam a cada atualização do servidor. Não use dados reais de pacientes.
+- O acesso de avaliação é ligado só no ambiente publicado (`ACESSO_AVALIACAO=true`, #81). A senha da recepção em
+  produção é outra, fica só no painel do Render, e a senha de desenvolvimento citada abaixo **não funciona** lá.
+  Detalhes em [docs/deploy.md](docs/deploy.md).
 
 ## 🎯 Problema
 
@@ -87,6 +93,7 @@ O modelo comentado está em [`.env.example`](.env.example); o `.env` de verdade 
 | `DB_ARQUIVO` | `data/db.json` | Arquivo onde os dados são salvos |
 | `AUTH_USUARIO` | `recepcao` | Usuário da recepção |
 | `AUTH_SENHA_HASH` | senha de desenvolvimento | Hash da senha, gerado com `npm run hash-senha -- "sua senha"` |
+| `ACESSO_AVALIACAO` | desligado | `true` mostra "Entrar como avaliador" na tela de login, sem senha. Só para ambiente de demonstração |
 | `AUTH_SEGREDO` | aleatório a cada início | Segredo que assina os tokens (sem ele, as sessões caem quando o servidor reinicia) |
 | `ENV_ARQUIVO` | `.env` | Caminho de outro arquivo de variáveis, se precisar |
 
