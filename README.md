@@ -9,6 +9,11 @@
 Sistema web para a **recepção de uma Unidade Básica de Saúde (UBS)** marcar consultas numa agenda
 única por especialidade, **sem horário duplicado**, e registrar se o paciente compareceu.
 
+**🌐 Publicado em: https://agenda-saude-ubs.onrender.com** (plano gratuito do Render: depois de 15 minutos sem
+uso o serviço dorme e o primeiro acesso leva cerca de 1 minuto; os dados são de demonstração e se apagam a cada
+reinício). A senha publicada abaixo **não funciona** lá: o login de produção é entregue à parte. Detalhes em
+[docs/deploy.md](docs/deploy.md).
+
 ## 🎯 Problema
 
 Em UBS do interior, como as de Tacaratu (PE), a marcação ainda é feita em caderno: o paciente

@@ -1,0 +1,24 @@
+# Blueprint do Render (https://render.com/docs/blueprint-spec) — publicação descrita em docs/deploy.md (#77).
+# Um serviço só: o Express entrega a API e a tela (src/public) na mesma porta.
+services:
+  - type: web
+    name: agenda-saude-ubs
+    runtime: node
+    plan: free
+    region: virginia
+    branch: main            # só a main vai para produção; develop é integração (Git Flow)
+    autoDeploy: true
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/saude
+    envVars:
+      - key: NODE_ENV
+        value: production   # sem AUTH_SENHA_HASH e AUTH_SEGREDO o servidor recusa iniciar (#76)
+      - key: NODE_VERSION
+        value: "22"
+      - key: AUTH_USUARIO
+        value: recepcao
+      - key: AUTH_SENHA_HASH
+        sync: false         # preenchido no painel: npm run hash-senha -- "senha forte"
+      - key: AUTH_SEGREDO
+        generateValue: true
