@@ -12,6 +12,7 @@ Ordem sugerida para quem chega agora: termo de abertura, requisitos, user storie
 | [arquitetura.md](arquitetura.md) | C4, camadas, classes, DER, ciclo de vida, concorrência, logs, API e códigos de erro | 0.5.0 | 14/11/2026 |
 | [lgpd.md](lgpd.md) | Mapa de dados pessoais, finalidade, base legal e medidas aplicadas | 0.5.0 | 14/11/2026 |
 | [desempenho.md](desempenho.md) | Baseline do RNF01 com 5.000 e 20.000 agendamentos | 0.5.0 | 14/11/2026 |
+| [deploy.md](deploy.md) | Publicação no Render: serviço, variáveis, health check, limites do plano free e como refazer | 0.6.0 | 14/11/2026 |
 | [acessibilidade.md](acessibilidade.md) | Auditoria axe-core e teclado, antes e depois, e checklist WCAG | 0.5.0 | 14/11/2026 |
 
 Fora desta pasta: [README](../README.md) (como rodar), [CONTRIBUTING](../CONTRIBUTING.md) (fluxo de Git) e

@@ -9,6 +9,11 @@
 Sistema web para a **recepção de uma Unidade Básica de Saúde (UBS)** marcar consultas numa agenda
 única por especialidade, **sem horário duplicado**, e registrar se o paciente compareceu.
 
+**🌐 Publicado em: https://agenda-saude-ubs.onrender.com** (plano gratuito do Render: depois de 15 minutos sem
+uso o serviço dorme e o primeiro acesso leva cerca de 1 minuto; os dados são de demonstração e se apagam a cada
+reinício). A senha publicada abaixo **não funciona** lá: o login de produção é entregue à parte. Detalhes em
+[docs/deploy.md](docs/deploy.md).
+
 ## 🎯 Problema
 
 Em UBS do interior, como as de Tacaratu (PE), a marcação ainda é feita em caderno: o paciente
@@ -68,7 +73,8 @@ Abra **http://localhost:3000** para usar a tela da recepção. Os dados ficam em
 criado na primeira gravação.
 
 **Login local:** usuário `recepcao`, senha `recepcao123`. Essa senha só vale para rodar na sua máquina, e o
-servidor avisa no log quando está usando ela. Em qualquer ambiente publicado, defina as variáveis abaixo.
+servidor avisa no log quando está usando ela. Em qualquer ambiente publicado, defina as variáveis abaixo:
+com `NODE_ENV=production`, o servidor **se recusa a iniciar** sem `AUTH_SENHA_HASH` e `AUTH_SEGREDO`.
 
 As variáveis podem vir do ambiente (painel da hospedagem, `docker compose`) ou do arquivo `.env`, que o servidor
 lê sozinho quando existe (`process.loadEnvFile`, Node 20.12+). O que vem do ambiente vale mais que o arquivo.
@@ -76,6 +82,7 @@ O modelo comentado está em [`.env.example`](.env.example); o `.env` de verdade 
 
 | Variável | Padrão | Uso |
 |---|---|---|
+| `NODE_ENV` | `development` | Com `production`, exige `AUTH_SENHA_HASH` e `AUTH_SEGREDO` para iniciar |
 | `PORT` | `3000` | Porta HTTP |
 | `DB_ARQUIVO` | `data/db.json` | Arquivo onde os dados são salvos |
 | `AUTH_USUARIO` | `recepcao` | Usuário da recepção |
@@ -216,6 +223,7 @@ e as notas em [Releases](https://github.com/Everson9/agenda-saude-ubs/releases).
 - [x] **v0.3.0**: agendamento completo, tela da recepção, testes e CI
 - [x] **v0.4.0**: relatório de faltas (#18), login da recepção (#19), gate de cobertura (#42) e varredura de segurança (#43)
 - [x] **v0.5.0** (Week_02): itens da avaliação técnica: concorrência (#48), LGPD (#49), rastreabilidade (#50), Dependabot (#51), `.env.example` (#52), índice de docs (#53), erro padronizado (#54), desempenho (#55), acessibilidade (#56), logs (#57) e Docker (#58)
+- [x] **v0.6.0**: publicação no Render (#77) e bloqueio da senha padrão em produção (#76)
 
 ## 📄 Licença
 
