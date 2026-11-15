@@ -48,6 +48,9 @@ td.vazio { color: var(--texto-apoio); font-weight: 600; }
 .login { max-width: 420px; margin: 16px auto; }
 .login form { grid-template-columns: 1fr; }
 .login .erro, #aviso.erro { color: var(--erro); }
+.avaliacao { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--borda); }
+.avaliacao p { margin: 0 0 12px; font-size: 15px; color: var(--texto-apoio); }
+.avaliacao button { width: 100%; }
 
 .pular { position: absolute; left: 8px; top: -48px; z-index: 1; padding: 8px 12px; background: var(--superficie); color: var(--texto); font-weight: 700; border-radius: 6px; }
 .pular:focus { top: 8px; }

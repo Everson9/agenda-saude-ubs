@@ -18,6 +18,10 @@ if (!auth.segredo) {
   logger.aviso('AUTH_SEGREDO não definido: as sessões caem quando o servidor reinicia');
 }
 
+if (auth.avaliacao) {
+  logger.aviso('ACESSO_AVALIACAO ligado: a tela de login oferece entrada sem senha como avaliador');
+}
+
 const app = criarApp({ store: criarStore(config.arquivoBanco), auth, logger });
 
 app.listen(config.porta, () => {

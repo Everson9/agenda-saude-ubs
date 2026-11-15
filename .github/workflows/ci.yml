@@ -13,8 +13,8 @@ jobs:
       matrix:
         node: [20, 22]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
           cache: npm
@@ -32,8 +32,8 @@ jobs:
     # RNF01: o script sai com erro se algum fluxo passar de 300 ms no p95 com 5.000 agendamentos
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -44,8 +44,8 @@ jobs:
     # axe-core (WCAG 2.1 A/AA) + percurso por teclado no Chrome que já vem no runner do Ubuntu
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -56,7 +56,7 @@ jobs:
     # a imagem builda, o compose sobe e a API responde; o healthcheck da imagem precisa ficar "healthy"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker compose up --build --detach --wait --wait-timeout 90
       - run: curl --fail --silent http://localhost:3000/api/saude
       - run: test "$(docker compose exec -T api whoami)" = "node"
@@ -71,14 +71,14 @@ jobs:
   seguranca:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # o Gitleaks varre o histórico inteiro, não só o último commit
       - name: Gitleaks (segredos vazados)
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm

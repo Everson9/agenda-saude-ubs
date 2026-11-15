@@ -3,6 +3,14 @@
 Todas as mudanças relevantes deste projeto. Formato baseado em
 [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.7.0] - 2026-11-14
+
+### Adicionado
+- Acesso de avaliação no ambiente publicado: botão "Entrar como avaliador" na tela de login, sem senha, ligado só com `ACESSO_AVALIACAO=true`. Rotas públicas `GET /api/auth/opcoes` e `POST /api/auth/avaliacao` (404 quando desligado). A senha da recepção continua secreta (EVAL-ACCESS) (#81).
+
+### Alterado
+- Dependências de desenvolvimento e actions do CI atualizadas pelo Dependabot: `actions/checkout` 7, `actions/setup-node` 7, `gitleaks-action` 3 (#72 a #75).
+
 ## [0.6.0] - 2026-11-14
 
 Publicação: o deploy público passou a ser exigido na aula de 07/11.

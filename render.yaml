@@ -22,3 +22,5 @@ services:
         sync: false         # preenchido no painel: npm run hash-senha -- "senha forte"
       - key: AUTH_SEGREDO
         generateValue: true
+      - key: ACESSO_AVALIACAO
+        value: "true"       # ambiente de demonstração: botão "Entrar como avaliador" (#81)

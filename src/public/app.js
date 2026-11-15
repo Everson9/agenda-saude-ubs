@@ -170,18 +170,35 @@ async function iniciar() {
   }
 }
 
+async function entrar(caminho, corpo) {
+  const { token: novo } = await api('POST', caminho, corpo);
+  token = novo;
+  sessao.gravar(novo);
+  await iniciar();
+}
+
 $('#form-login').addEventListener('submit', async (ev) => {
   ev.preventDefault();
   try {
-    const { token: novo } = await api('POST', '/api/auth/login', Object.fromEntries(new FormData(ev.target)));
-    token = novo;
-    sessao.gravar(novo);
+    await entrar('/api/auth/login', Object.fromEntries(new FormData(ev.target)));
     ev.target.reset();
-    await iniciar();
   } catch (e) {
     $('#aviso-login').textContent = e.message;
   }
 });
+
+$('#entrar-avaliador').addEventListener('click', async () => {
+  try {
+    await entrar('/api/auth/avaliacao');
+  } catch (e) {
+    $('#aviso-login').textContent = e.message;
+  }
+});
+
+// o servidor diz se o acesso de avaliação está ligado (#81); se a consulta falhar, o botão fica escondido
+api('GET', '/api/auth/opcoes')
+  .then(({ avaliacao }) => { $('#caixa-avaliacao').hidden = !avaliacao; })
+  .catch(() => {});
 
 $('#sair').addEventListener('click', () => mostrarLogin());
 $('#filtro-dia').value = new Date().toLocaleDateString('sv-SE');

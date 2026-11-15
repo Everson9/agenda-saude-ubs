@@ -163,6 +163,8 @@ O servidor escreve **uma linha JSON por evento** na saída padrão, pronta para 
 |---|---|---|---|
 | GET | `/api/saude` | — (pública) | 200 |
 | POST | `/api/auth/login` | RNF05 (pública) | 200, 401 |
+| GET | `/api/auth/opcoes` | #81 (pública): informa se o acesso de avaliação está ligado | 200 |
+| POST | `/api/auth/avaliacao` | #81 (pública): token de 8 h para o usuário `avaliador`, só com `ACESSO_AVALIACAO=true` | 200, 404 |
 | POST | `/api/pacientes` | RF01 | 201, 400, 409 |
 | GET | `/api/pacientes?busca=` | RF02 | 200 |
 | GET | `/api/pacientes/:id` | RF02 | 200, 404 |
